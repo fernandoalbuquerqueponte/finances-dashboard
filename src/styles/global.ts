@@ -9,6 +9,6 @@ export const GlobalStyle = createGlobalStyle`
    }
 
    body{
-      background-color: ${({ theme }) => theme.COLORS.gray_200};
+      background-color: ${({ theme }) => theme.COLORS.gray900};
    }
 `
