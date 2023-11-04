@@ -11,10 +11,8 @@ export const Input = ({ label = '', placeholder, icon = "", ...rest }: InputProp
    const labelId = useId()
    return (
       <>
-         <S.Container>
-            {label && <S.Label htmlFor={labelId} >{label}</S.Label>}
-            <S.Input id={labelId} placeholder={placeholder} {...rest} />
-         </S.Container>
+         {label && <S.Label htmlFor={labelId} >{label}</S.Label>}
+         <S.Input id={labelId} placeholder={placeholder} {...rest} />
       </>
    )
 }

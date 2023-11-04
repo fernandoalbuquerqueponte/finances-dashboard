@@ -1,13 +1,22 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-   width: 100vw;
+   width: 100%;
    height: 100vh;
    display: flex;
    justify-content: center;
    align-items: center;
    flex-direction: column;
 `;
+
+export const FormArea = styled.form`
+   width:450px;
+   max-width: 100%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 0 15px;
+`
 
 export const Title = styled.h1`
    color: ${({ theme }) => theme.COLORS.white};
