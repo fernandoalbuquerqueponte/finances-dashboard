@@ -12,7 +12,7 @@ export const Button = styled.button<ButtonProps>`
    cursor: pointer;
    transition: ease-in 1.5;
    &:hover{
-      opacity: 0.7;
+      opacity: 0.7;   
    }
 
      ${({ color, theme }) => color === 'primary' && css`
