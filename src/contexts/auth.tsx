@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useState } from 'react'
 
 import { auth, db } from '../services/firebaseConfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc, } from 'firebase/firestore';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 type AuthContextProps = {
    signIn: (email: string, password: string) => void;
@@ -41,19 +41,43 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                   setUser(data)
                   storageData(data)
                   alert("Conta registrada com sucesso!")
-                  setLoadingAuth(false)
                   console.log(name, email, password)
                })
-
          })
+      setLoadingAuth(false)
+   }
+
+   const signIn = async (email: string, password: string) => {
+      setLoadingAuth(true)
+
+      await signInWithEmailAndPassword(auth, email, password)
+         .then(async (value) => {
+            let uid = value.user.uid
+            const docRef = doc(db, "users", uid)
+
+            const docSnapshot = await getDoc(docRef)
+
+            if (docSnapshot) {
+               let data = {
+                  uid: uid,
+                  email: value.user.email,
+                  name: docSnapshot.data()?.name,
+                  avatarUrl: docSnapshot.data()?.avatar
+               }
+
+               setUser(data)
+               storageData(data)
+               alert(`User ${data.name} Logged in`)
+            }
+
+         }).catch((error) => {
+            console.log(error)
+         })
+      setLoadingAuth(false)
    }
 
    const storageData = (data: object) => {
       localStorage.setItem('@finances-dashboard', JSON.stringify(data))
-   }
-
-   const signIn = async (email: string, password: string) => {
-      console.log(email, password)
    }
 
    return (
