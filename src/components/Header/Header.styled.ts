@@ -3,6 +3,14 @@ import { Link } from 'react-router-dom';
 
 import { List, Money, Wallet, User, ClockCountdown, X } from "@phosphor-icons/react";
 
+type SidebarContainerProps = {
+   isOpen: boolean
+}
+
+type ListSvgProps = {
+   onClick: void
+}
+
 export const HeaderMenuContainer = styled.div`
    display: flex ;
    width: 100%;
@@ -12,13 +20,14 @@ export const HeaderMenuContainer = styled.div`
    padding: 0 15px;
 `;
 
-export const SidebarContainer = styled.div`
+export const SidebarContainer = styled.div<SidebarContainerProps>`
    display: flex;
    flex-direction: column;
    width: 180px;
    height: 100vh;
    background-color: ${({ theme }) => theme.COLORS.gray900};
    border-right: 0.1rem solid #c4c4c4; 
+   display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
 `;
 
 export const RouterLink = styled(Link)`
@@ -56,11 +65,11 @@ export const AddSvg = styled(ClockCountdown).attrs({
 `;
 
 
-export const ListSvg = styled(List).attrs({
-   color: "#fafafa",
-   size: 25,
+export const ListSvg = styled(List).attrs<ListSvgProps>({
+   size: 30,
 })`
    cursor: pointer;
+   color: ${({ theme }) => theme.COLORS.neutral300};
    &:hover {
       opacity: 0.5;
       transition: all 0.3s;
