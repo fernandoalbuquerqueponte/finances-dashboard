@@ -18,6 +18,8 @@ export const HeaderMenuContainer = styled.div`
    justify-content: space-between;
    margin: 20px 0;
    padding: 0 15px;
+   position: relative; /* Definindo a posição */
+   z-index: 10000; /* Defina um z-index alto para o header */
 `;
 
 export const SidebarContainer = styled.div<SidebarContainerProps>`
@@ -28,6 +30,8 @@ export const SidebarContainer = styled.div<SidebarContainerProps>`
    background-color: ${({ theme }) => theme.COLORS.gray900};
    border-right: 0.1rem solid #c4c4c4; 
    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+   position: relative;
+   z-index: 10000;
 `;
 
 export const RouterLink = styled(Link)`
@@ -39,7 +43,6 @@ export const RouterLink = styled(Link)`
    padding: 10px;
 
    &:hover{
-      /* opacity: 0.5; */
       background-color: ${({ theme }) => theme.COLORS.green900};
       color: #fff;
       border-radius: 8px;
