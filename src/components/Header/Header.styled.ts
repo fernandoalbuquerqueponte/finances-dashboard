@@ -1,35 +1,20 @@
 import styled from "styled-components";
 import { Link } from 'react-router-dom';
 
-import { List, Money, Wallet, User, ClockCountdown, X } from "@phosphor-icons/react";
+import { Money, Wallet, User, ClockCountdown } from "@phosphor-icons/react";
 
-type SidebarContainerProps = {
-   isOpen: boolean
-}
-
-type ListSvgProps = {
-   onClick: void
-}
-
-export const HeaderMenuContainer = styled.div`
-   display: flex ;
-   width: 100%;
+export const IconHeaderContainer = styled.div`
    height: 2rem;
-   justify-content: space-between;
-   margin: 20px 0;
-   padding: 0 15px;
-   position: relative; /* Definindo a posição */
-   z-index: 10000; /* Defina um z-index alto para o header */
+   margin: 20px 20px;
 `;
 
-export const SidebarContainer = styled.div<SidebarContainerProps>`
+export const SidebarContainer = styled.div`
    display: flex;
    flex-direction: column;
    width: 180px;
    height: 100vh;
    background-color: ${({ theme }) => theme.COLORS.gray900};
-   border-right: 0.1rem solid #c4c4c4; 
-   display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+   border-right: 1px solid #c4c4c4; 
    position: relative;
    z-index: 10000;
 `;
@@ -65,29 +50,6 @@ export const AddSvg = styled(ClockCountdown).attrs({
    size: 25
 })`
    color: ${({ theme }) => theme.COLORS.neutral300}
-`;
-
-
-export const ListSvg = styled(List).attrs<ListSvgProps>({
-   size: 30,
-})`
-   cursor: pointer;
-   color: ${({ theme }) => theme.COLORS.neutral300};
-   &:hover {
-      opacity: 0.5;
-      transition: all 0.3s;
-   }
-`;
-
-export const CloseMenuIcon = styled(X).attrs({
-   size: 30,
-})`
-   color: ${({ theme }) => theme.COLORS.neutral300};
-   cursor: pointer;
-   &:hover {
-      opacity: 0.5;
-      transition: all 0.3s;
-   }
 `;
 
 export const MoneySvg = styled(Money).attrs({
