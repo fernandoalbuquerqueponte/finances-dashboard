@@ -10,9 +10,9 @@ export const Dashboard: React.FC = () => {
          <Header />
          <Title title='FinancesDashboard' />
          <S.DashboardContainer>
-            <Card />
-            <Card />
-            <Card />
+            <Card type="Total" icon="Total" value='R$ 5.000,00' />
+            <Card type='Entrada' icon="Entrada" value='R$ 2.000,00' />
+            <Card type='Saída' icon="Saída" value='R$ 75.000,00' />
          </S.DashboardContainer>
       </S.DashboardContainerr>
    )

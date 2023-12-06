@@ -8,7 +8,15 @@ export const DashboardContainerr = styled.div`
 export const DashboardContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
+  justify-content: center; 
+  padding-left: 180px;
+  width: 100vw;
+  height: 100vh;
+
+  @media (max-width: 975px) {
+    flex-direction: column;
+    margin-top: 100px;
+    
+  }
+
 `;
