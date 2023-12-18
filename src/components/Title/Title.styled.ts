@@ -3,13 +3,12 @@ import styled from "styled-components";
 import { TitleAreaProps } from ".";
 
 export const TitleArea = styled.div<TitleAreaProps>`
-   background-color: ${({ theme }) => theme.COLORS.violet900};
    display: flex;
-   position: absolute;
-   top: 0;
-   left: 0;
+   background-color: ${({ theme }) => theme.COLORS.violet900};
+   position: relative;
+   padding-left: 180px;
    width: 100%;
-   height: 130px;
+   height: 145px;
    z-index: 9999;
 `
 
