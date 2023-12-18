@@ -12,10 +12,11 @@ export const SidebarContainer = styled.div`
    display: flex;
    flex-direction: column;
    width: 180px;
-   height: 100vh;
+   height: 100%;
    background-color: ${({ theme }) => theme.COLORS.gray900};
    border-right: 1px solid #c4c4c4; 
-   position: relative;
+   position: fixed;
+   overflow: auto;
    z-index: 10000;
 `;
 
