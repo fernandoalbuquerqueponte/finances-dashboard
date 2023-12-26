@@ -1,27 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { List } from "@phosphor-icons/react";
 import * as S from './Header.styled'
 
+import { Sidebar } from '../Sidebar';
+
 export const Header: React.FC = () => {
+   const [sidebar, setSidebar] = useState(false)
+   const showSidebar = () => setSidebar(!sidebar)
+   
    return (
-      <S.SidebarContainer>
-         <S.IconHeaderContainer>
-            <S.MoneySvg />
-         </S.IconHeaderContainer>
-
-         <S.RouterLink to="/dashboard">
-            <S.WalletSvg />
-            Finanças
-         </S.RouterLink>
-
-         <S.RouterLink to="/new">
-            <S.AddSvg />
-            Adicionar
-         </S.RouterLink>
-
-         <S.RouterLink to="/profile">
-            <S.UserSvg />
-            Perfil
-         </S.RouterLink>
-      </S.SidebarContainer>
+      <S.Container>
+         <List onClick={showSidebar} />
+         {sidebar && <Sidebar sidebar active={setSidebar} />}
+      </S.Container>
    )
 }
