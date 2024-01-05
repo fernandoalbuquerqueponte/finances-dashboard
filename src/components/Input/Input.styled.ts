@@ -1,24 +1,24 @@
 import styled from "styled-components";
 
-// export const Container = styled.div`
-//    display: flex;
-//    flex-direction: column;
-// `
+export const InputContainer = styled.div`
+   display: flex;
+   width: 100%;
+   flex-direction: column;
+`
 
 export const Label = styled.label`
    color: ${({ theme }) => theme.COLORS.white};
-   width: 100%;
-   font-size: 0.8rem;
+   max-width: 100%;
+   font-size: 0.9rem;
    justify-content: flex-end;
-   padding-left: 0.5rem;
+   padding-left: 0.6rem;
 `
 
 export const Input = styled.input`
-   width: 100%;
    height: 50px;
    background-color: #1E1E21;
    padding: 1rem;
-   border-radius: 6px;
+   border-radius: 7px;
    border: none;
    color: ${({ theme }) => theme.COLORS.white};
    margin-bottom: 1rem;
@@ -30,6 +30,6 @@ export const Input = styled.input`
 
    &::placeholder {
       color: #7C7C8A;
-      font-size:14px
+      font-size:15px
    }
 `
