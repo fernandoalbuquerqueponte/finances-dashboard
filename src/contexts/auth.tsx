@@ -6,13 +6,20 @@ import { auth, db } from '../services/firebaseConfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 
+type User = {
+   uid: string;
+   email: string | null;
+   name: string;
+   avatarUrl: string | null;
+};
+
 type AuthContextProps = {
    signIn: (email: string, password: string) => void;
    signUp: (name: string, email: string, password: string) => void;
    storageData: (data: object) => void;
    handleLogoutUser: () => void;
    signed: boolean;
-   user: null | object;
+   user: User | null;
    loadingAuth: boolean;
    loading: boolean;
 }
@@ -20,12 +27,11 @@ type AuthContextProps = {
 export const AuthContext = createContext<AuthContextProps>({} as AuthContextProps)
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-   const [user, setUser] = useState<{} | null>(null)
+   const [user, setUser] = useState<User | null>(null)
    const [loadingAuth, setLoadingAuth] = useState(false)
    const [loading, setLoading] = useState(true)
 
    const navigate = useNavigate()
-
 
    useEffect(() => {
       const UserIslogged = async () => {
@@ -36,7 +42,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setLoading(false)
             console.log('User está logado !')
          }
-
          setLoading(false)
       }
       UserIslogged()
@@ -84,7 +89,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                   uid: uid,
                   email: value.user.email,
                   name: docSnapshot.data()?.name,
-                  avatarUrl: docSnapshot.data()?.avatar
+                  avatarUrl: docSnapshot.data()?.avatarUrl,
                }
 
                setUser(data)
