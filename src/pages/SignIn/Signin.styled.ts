@@ -3,16 +3,15 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 export const Container = styled.div`
-   width: 100%;
-   height: 100vh;
    display: flex;
+   height: 100%;
    justify-content: center;
    align-items: center;
    flex-direction: column;
+   margin-top: 150px;
 `;
 
 export const FormArea = styled.form`
-   width:450px;
    max-width: 100%;
    display: flex;
    flex-direction: column;
