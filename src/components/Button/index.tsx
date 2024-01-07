@@ -10,13 +10,15 @@ export type ButtonProps = {
 
 export const Button = ({ name, color, width, height, ...props }: ButtonProps) => {
    return (
-      <S.Button
-         color={color}
-         width={width}
-         height={height}
-         {...props}
-      >
-         {name}
-      </S.Button>
+      <S.ButtonContainer >
+         <S.Button
+            color={color}
+            width={width}
+            height={height}
+            {...props}
+         >
+            {name}
+         </S.Button>
+      </S.ButtonContainer>
    )
 }

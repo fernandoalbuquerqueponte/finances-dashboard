@@ -1,16 +1,20 @@
 import styled, { css } from "styled-components";
 import { ButtonProps } from ".";
 
+export const ButtonContainer = styled.div`
+    /* display: flex; */
+`
+
 export const Button = styled.button<ButtonProps>`
    border: none;
-   font-weight: 400;
+   font-weight: 600;
    color: ${({ theme }) => theme.COLORS.white};
    border-radius: 6px;
    width: ${props => props.width}px;
-   max-width: 100%;
    height: ${props => props.height}px;
    cursor: pointer;
    transition: ease-in 1.5;
+   
    &:hover{
       opacity: 0.7;   
    }
