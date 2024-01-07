@@ -7,7 +7,7 @@ import { Sidebar } from '../Sidebar';
 export const Header: React.FC = () => {
    const [sidebar, setSidebar] = useState(false)
    const showSidebar = () => setSidebar(!sidebar)
-   
+
    return (
       <S.Container>
          <List onClick={showSidebar} />

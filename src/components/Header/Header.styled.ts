@@ -5,12 +5,12 @@ export const Container = styled.div`
    height: 100vh;
    align-content: center;
    background-color: ${({ theme }) => theme.COLORS.gray900};
-   position: fixed;
+   position: absolute;
    z-index: 10000;
 
    > svg {
       display: flex;
-      position: fixed;
+      position: absolute;
       color: #c4c4c4;
       width: 30px;
       height: 30px;

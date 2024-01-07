@@ -7,7 +7,7 @@ export const Container = styled.div<SidebarProps | any>`
    height: 100%;
    top: 0px;
    left: 0px;
-   width: 250px;
+   width: 220px;
    left: ${props => props.sidebar ? '0' : '-100%'};
    animation: showSidebar .5s;
 
@@ -27,7 +27,7 @@ export const Container = styled.div<SidebarProps | any>`
       }
       to{
          opacity: 1;
-         width: 250px;
+         width: 220px;
       }
    }
 `

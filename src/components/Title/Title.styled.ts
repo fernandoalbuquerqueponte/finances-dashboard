@@ -5,12 +5,13 @@ import { TitleAreaProps } from ".";
 export const TitleArea = styled.div<TitleAreaProps>`
    display: flex;
    background-color: ${({ theme }) => theme.COLORS.violet900};
-   width: 100vw;
-   height: 145px;
+   position: relative;
+   width: 100%;
+   height: 100px;
    z-index: 9999;
 `
 
-export const NameTitle = styled.h4`
+export const NameTitle = styled.span`
    display: flex;
    color: ${({ theme }) => theme.COLORS.white};
    margin: 0 auto;
