@@ -18,6 +18,7 @@ type AuthContextProps = {
    signUp: (name: string, email: string, password: string) => void;
    storageData: (data: object) => void;
    handleLogoutUser: () => void;
+   setUser: React.Dispatch<React.SetStateAction<User | null>>;
    signed: boolean;
    user: User | null;
    loadingAuth: boolean;
@@ -124,6 +125,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
          signIn,
          handleLogoutUser,
          user,
+         setUser,
          loadingAuth,
          loading,
          storageData
