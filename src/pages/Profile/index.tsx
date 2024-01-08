@@ -15,7 +15,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { ref, StorageReference, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export const Profile = () => {
-   const { user, setUser, storageData } = useContext<any>(AuthContext);
+   const { user, setUser, storageData, handleLogoutUser } = useContext<any>(AuthContext);
 
    const [name, setName] = useState(user && user?.name);
    const [email, setEmail] = useState(user && user?.email);
@@ -141,6 +141,7 @@ export const Profile = () => {
                <Button
                   name='Sair'
                   color='danger'
+                  onClick={() => handleLogoutUser()}
                   width={100}
                   height={45}
                />
