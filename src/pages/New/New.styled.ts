@@ -30,6 +30,7 @@ export const NewContainer = styled.div`
 export const RadioInputContainer = styled.div`
    display: flex;
    color: #fafafa;
+   margin-bottom: 15px;
 
    >input[type="radio"]{
       width: 16px;

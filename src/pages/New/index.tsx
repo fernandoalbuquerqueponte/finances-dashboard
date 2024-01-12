@@ -4,6 +4,10 @@ import { AuthContext } from '../../contexts/auth';
 import { db } from '../../services/firebaseConfig';
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 
+import { format } from 'date-fns'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom';
+
 import { Header } from '../../components/Header'
 import { Title } from '../../components/Title'
 import { Input } from '../../components/Input';
@@ -12,16 +16,45 @@ import { Button } from '../../components/Button';
 import * as S from './New.styled'
 
 export const New = () => {
-   const { user } = useContext(AuthContext)
+   const { user } = useContext(AuthContext);
+   const navigate = useNavigate();
 
-   const [type, setType] = useState("entrada")
-   const [description, setDescription] = useState("")
-   const [value, setValue] = useState("")
+   const [type, setType] = useState("entrada");
+   const [nameOfFinance, setNameOfFinance] = useState("");
+   const [description, setDescription] = useState("");
+   const [value, setValue] = useState("");
 
-   const handleChangeType = (e: any) => setType(e.target.value)
+   const handleChangeType = (e: any) => setType(e.target.value);
 
-   const handleSubmit = (e: any) => {
-      e.preventDefault()
+   const currencyFormatter = (amount: any) => {
+      return new Intl.NumberFormat('pt-br', {
+         style: 'currency',
+         currency: 'BRL'
+      }).format(amount);
+   };
+
+   const handleSubmit = async (e: any) => {
+      e.preventDefault();
+
+      //Salvar dados da finança no Banco de dados
+      await addDoc(collection(db, "finances"), {
+         created: new Date,
+         createdFormated: format(new Date, 'dd/MM/yyyy'),
+         type: type,
+         nameOfFinance: nameOfFinance,
+         value: currencyFormatter(value),
+         description: description,
+         userUid: user?.uid,
+      }).then(() => {
+         navigate('/dashboard')
+         toast.success("Finança adicionada com sucesso!", { position: 'bottom-right' });
+      }).catch((err) => {
+         console.log(err);
+         toast.error("Erro ao cadastrar finança", { position: 'bottom-right' });
+         setValue("");
+         setNameOfFinance("");
+         setDescription("");
+      })
    }
 
    return (
@@ -48,6 +81,13 @@ export const New = () => {
                />
                <span>Saída</span>
             </S.RadioInputContainer>
+            <Input
+               placeholder='Ex: IPVA do carro '
+               value={nameOfFinance}
+               onChange={(e) => setNameOfFinance(e.target.value)}
+               type='text'
+               label='Nome da finança'
+            />
             <Input
                placeholder='Ex: $4000,00'
                value={value}
