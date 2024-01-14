@@ -9,7 +9,7 @@ export const InputContainer = styled.div`
 export const Label = styled.label`
    color: ${({ theme }) => theme.COLORS.white};
    max-width: 100%;
-   font-size: 0.9rem;
+   font-size: 1rem;
    justify-content: flex-end;
    padding-left: 0.6rem;
 `
