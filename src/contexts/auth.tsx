@@ -58,6 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             await setDoc(doc(db, 'users', uid), {
                name: name,
                avatarUrl: null,
+               uid: uid
             })
                .then(() => {
                   let data = {
