@@ -8,7 +8,7 @@ export interface TransactionCardProps {
    value?: string
 }
 
-export const TransactionCard: React.FC<TransactionCardProps> = ({ date , financeName, type = "entrada", value }) => {
+export const TransactionCard: React.FC<TransactionCardProps> = ({ date, financeName, type, value }) => {
    return (
       <S.TransactionCard>
          {date && <p>{date}</p>}

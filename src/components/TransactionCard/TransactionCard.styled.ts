@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { ArrowCircleUp, ArrowCircleDown } from "@phosphor-icons/react";
 
 import { TransactionCardProps } from './index';
