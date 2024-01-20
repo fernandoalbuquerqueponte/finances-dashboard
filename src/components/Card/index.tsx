@@ -7,7 +7,7 @@ export type CardProps = {
    value?: string | undefined | number;
 }
 
-export const Card: React.FC = ({ type, icon, value }: CardProps) => {
+export const Card: React.FC<CardProps> = ({ type, icon, value }) => {
    return (
       <S.CardAreaContainer>
          <S.CardTitle>
