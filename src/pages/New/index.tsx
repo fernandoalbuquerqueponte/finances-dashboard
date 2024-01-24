@@ -44,9 +44,11 @@ export const New = () => {
          nameOfFinance: nameOfFinance,
          value: currencyFormatter(value),
          description: description,
-         userUid: user?.uid,
+         uid: user?.uid,
+         typeEntrada: type === 'entrada' ? value : null,
+         typeSaida: type === 'saída' ? value : null,
       }).then(() => {
-         navigate('/dashboard')
+         navigate('/dashboard');
          toast.success("Finança adicionada com sucesso!", { position: 'bottom-right' });
       }).catch((err) => {
          console.log(err);
