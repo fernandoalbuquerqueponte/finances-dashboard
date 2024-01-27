@@ -6,6 +6,7 @@ import { CurrencyCircleDollar, ArrowCircleUp, ArrowCircleDown } from "@phosphor-
 export const CardAreaContainer = styled.div<CardProps>`
    display: flex;
    flex-wrap: wrap;
+   flex-direction: column;
    max-width: 250px;
    width: 250px;
    max-height: 110px;
