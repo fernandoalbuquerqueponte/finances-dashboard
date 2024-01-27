@@ -24,36 +24,27 @@ export const New = () => {
    const [description, setDescription] = useState("");
    const [value, setValue] = useState("");
 
-   const handleChangeType = (e: any) => setType(e.target.value);
+   const handleChangeType = (e: React.ChangeEvent<HTMLInputElement>) => setType(e.target.value);
 
-   const currencyFormatter = (amount: any) => {
-      return new Intl.NumberFormat('pt-br', {
-         style: 'currency',
-         currency: 'BRL'
-      }).format(amount);
-   };
-
-   const handleSubmit = async (e: any) => {
+   const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
 
-      //Salvar dados da finança no Banco de dados
+      const numericValue = parseFloat(value);
+
       await addDoc(collection(db, "finances"), {
          created: new Date,
          createdFormated: format(new Date, 'dd/MM/yyyy'),
          type: type,
          nameOfFinance: nameOfFinance,
-         value: currencyFormatter(value),
+         value: numericValue,
          description: description,
          uid: user?.uid,
-         typeEntrada: type === 'entrada' ? value : null,
-         typeSaida: type === 'saída' ? value : null,
       }).then(() => {
          navigate('/dashboard');
          toast.success("Finança adicionada com sucesso!", { position: 'bottom-right' });
       }).catch((err) => {
          console.log(err);
          toast.error("Erro ao cadastrar finança", { position: 'bottom-right' });
-         setValue("");
          setNameOfFinance("");
          setDescription("");
       })
@@ -86,14 +77,14 @@ export const New = () => {
             <Input
                placeholder='Ex: IPVA do carro '
                value={nameOfFinance}
-               onChange={(e) => setNameOfFinance(e.target.value)}
+               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNameOfFinance(e.target.value)}
                type='text'
                label='Nome da finança'
             />
             <Input
                placeholder='Ex: $4000,00'
-               value={value}
-               onChange={(e) => setValue(e.target.value)}
+               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
+               value={value.toString()}
                type='number'
                label='Valor'
             />
@@ -101,7 +92,7 @@ export const New = () => {
             <textarea
                placeholder='Descreva sua descrição(opcional)'
                value={description}
-               onChange={(e) => setDescription(e.target.value)}
+               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)}
             />
             <br />
             <Button
