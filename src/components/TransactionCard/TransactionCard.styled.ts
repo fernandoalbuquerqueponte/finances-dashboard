@@ -15,7 +15,7 @@ export const TransactionCard = styled.div<TransactionCardProps>`
       padding: 0 15px;
       max-width: 100%;
       height: 60px;
-      margin: 15px 0;
+      margin: 7px 0;
       border-radius: 15px;
       cursor: pointer;
       background-color: ${({ theme }) => theme.COLORS.neutral900};
@@ -32,6 +32,8 @@ export const TransactionCard = styled.div<TransactionCardProps>`
 
    >p {
       color: ${({ theme }) => theme.COLORS.neutral300};
+      font-size: 14px;
+      margin: 10px 15px;
    }
 `
 

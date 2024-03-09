@@ -18,6 +18,7 @@ export const CardValuesContainer = styled.div`
 
 export const TransactionContainer = styled.div`
   display: flex;
+  flex-direction: column;
   /* padding-left: 180px; */
   justify-content: center;
 `

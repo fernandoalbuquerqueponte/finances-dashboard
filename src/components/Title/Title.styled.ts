@@ -4,10 +4,10 @@ import { TitleAreaProps } from ".";
 
 export const TitleArea = styled.div<TitleAreaProps>`
    display: flex;
-   background-color: ${({ theme }) => theme.COLORS.violet900};
+   background-color: ${({ theme }) => theme.COLORS.green900};
    position: relative;
    width: 100%;
-   height: 100px;
+   height: 110px;
    z-index: 9999;
 `
 

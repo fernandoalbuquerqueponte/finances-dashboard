@@ -5,16 +5,15 @@ import { CurrencyCircleDollar, ArrowCircleUp, ArrowCircleDown } from "@phosphor-
 
 export const CardAreaContainer = styled.div<CardProps>`
    display: flex;
-   flex-wrap: wrap;
    flex-direction: column;
-   max-width: 250px;
+   max-width: 100%;
    width: 250px;
-   max-height: 110px;
    margin: 20px 15px;
    padding: 20px 30px;
-   border: 1px solid	#c4c4c4;
+   background-color: #1A1A1A;
    border-radius: 2rem;
    cursor: pointer;
+   border: 1px solid	#c4c4c4;
 
    &:hover {
       opacity: 0.7;
