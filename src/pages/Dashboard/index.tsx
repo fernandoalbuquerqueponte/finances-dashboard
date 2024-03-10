@@ -20,6 +20,7 @@ import { TransactionCard } from "../../components/TransactionCard";
 import { Header } from "../../components/Header";
 import { Title } from "../../components/Title";
 import { Card } from "../../components/Card";
+import { NoTransactions } from "../../components/NoTransactions";
 
 interface FinanceItemProps {
   id: string;
@@ -89,6 +90,7 @@ export const Dashboard: React.FC = () => {
         setTotalValueCash(totalValue);
 
         console.log(totalValue);
+        console.log(finances);
       });
     };
     FinancesLoaging();
@@ -102,14 +104,16 @@ export const Dashboard: React.FC = () => {
         <Card
           type="Total"
           icon="Total"
-          value={totalValueCash ? currencyFormatter(totalValueCash) : "0,00"}
+          value={totalValueCash ? currencyFormatter(totalValueCash) : "R$ 0,00"}
         />
 
         <Card
           type="Entrada"
           icon="Entrada"
           value={
-            financeCashEntrace ? currencyFormatter(financeCashEntrace) : "0,00"
+            financeCashEntrace
+              ? currencyFormatter(financeCashEntrace)
+              : "R$ 0,00"
           }
         />
 
@@ -119,25 +123,31 @@ export const Dashboard: React.FC = () => {
           value={
             financeCashOutBack
               ? `- ${currencyFormatter(financeCashOutBack)}`
-              : "0,00"
+              : "R$ 0,00"
           }
         />
       </S.CardValuesContainer>
       <S.TransactionContainer>
-        {finances?.map((finance, index) => (
-          <TransactionCard
-            key={finance.id}
-            date={
-              index === 0 ||
-              finance.createdFormated !== finances[index - 1].createdFormated
-                ? finance.createdFormated
-                : ""
-            }
-            type={finance.type}
-            financeName={finance.nameOfFinance}
-            value={finance.value}
-          />
-        ))}
+        {totalValueCash ? (
+          finances?.map((finance, index) => (
+            <TransactionCard
+              key={finance.id}
+              date={
+                index === 0 ||
+                finance.createdFormated !== finances[index - 1].createdFormated
+                  ? finance.createdFormated
+                  : ""
+              }
+              type={finance.type}
+              financeName={finance.nameOfFinance}
+              value={finance.value}
+            />
+          ))
+        ) : (
+          <S.NoTransactionsContainer>
+            <NoTransactions name={user?.name} />
+          </S.NoTransactionsContainer>
+        )}
       </S.TransactionContainer>
     </S.DashboardContainer>
   );
