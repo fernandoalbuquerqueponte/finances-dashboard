@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
-import { List } from "@phosphor-icons/react";
-import * as S from './Header.styled'
+import { Link } from "react-router-dom";
+import * as S from "./Header.styled";
+import { AuthContext } from "../../contexts/auth";
+import { useContext } from "react";
+import logo from "../../assets/logo.png";
 
-import { Sidebar } from '../Sidebar';
+export const Header = () => {
+  const { user } = useContext(AuthContext);
+  return (
+    <S.HeaderContainer>
+      <Link to="/dashboard">
+        <img src={logo} alt="Finances" />
+      </Link>
 
-export const Header: React.FC = () => {
-   const [sidebar, setSidebar] = useState(false)
-   const showSidebar = () => setSidebar(!sidebar)
+      <div>
+        <Link to="/dashboard">Home</Link>
+        <Link to="/new">Adicionar</Link>
+        <Link to="/profile">Perfil</Link>
+      </div>
 
-   return (
-      <S.Container>
-         <List onClick={showSidebar} />
-         {sidebar && <Sidebar sidebar active={setSidebar} />}
-      </S.Container>
-   )
-}
+      <img src={user?.avatarUrl as any} alt="" />
+    </S.HeaderContainer>
+  );
+};

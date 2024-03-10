@@ -18,8 +18,7 @@ import { currencyFormatter } from "../../utils/currencyFormatter";
 
 import { TransactionCard } from "../../components/TransactionCard";
 import { Header } from "../../components/Header";
-import { Title } from "../../components/Title";
-import { Card } from "../../components/Card";
+import * as Card from "../../components/Card";
 import { NoTransactions } from "../../components/NoTransactions";
 
 interface FinanceItemProps {
@@ -99,15 +98,14 @@ export const Dashboard: React.FC = () => {
   return (
     <S.DashboardContainer>
       <Header />
-      <Title title="FinancesDashboard" />
       <S.CardValuesContainer>
-        <Card
+        <Card.Card
           type="Total"
           icon="Total"
           value={totalValueCash ? currencyFormatter(totalValueCash) : "R$ 0,00"}
         />
 
-        <Card
+        <Card.Card
           type="Entrada"
           icon="Entrada"
           value={
@@ -117,7 +115,7 @@ export const Dashboard: React.FC = () => {
           }
         />
 
-        <Card
+        <Card.Card
           type="Saída"
           icon="Saída"
           value={

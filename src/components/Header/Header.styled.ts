@@ -1,21 +1,36 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-   display: flex;
-   height: 100vh;
-   align-content: center;
-   background-color: ${({ theme }) => theme.COLORS.gray900};
-   position: absolute;
-   z-index: 10000;
+export const HeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 95px;
+  border-bottom: 1px solid #c4c4c4;
+  padding: 0 30px;
 
-   > svg {
-      display: flex;
-      position: absolute;
+  > a {
+    > img {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  > img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+  }
+
+  > div {
+    display: flex;
+    gap: 15px;
+    > a {
+      text-decoration: none;
       color: #c4c4c4;
-      width: 30px;
-      height: 30px;
-      margin-top: 32px;
-      margin-left: 32px;
-      cursor: pointer;
-   }
+    }
+    > a:hover {
+      color: ${({ theme }) => theme.COLORS.green600};
+    }
+  }
 `;
