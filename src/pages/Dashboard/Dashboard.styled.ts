@@ -1,18 +1,24 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const DashboardContainer = styled.div`
-  height: 100vh;
+  width: 100%;
 `;
 
 export const CardValuesContainer = styled.div`
   display: flex;
-  align-items: center;
+  gap: 15px;
+  width: 100%;
+  padding: 0 15px;
   justify-content: center;
-  /* padding-left: 180px; */
-  margin: 50px 0;
+  margin: 60px auto;
+  overflow-x: scroll;
 
-  @media (max-width: 975px) {
-    flex-direction: column;
+  @media (max-width: 693px) {
+    justify-content: flex-start;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
@@ -26,6 +32,5 @@ export const NoTransactionsContainer = styled.div`
 export const TransactionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  /* padding-left: 180px; */
   justify-content: center;
 `;

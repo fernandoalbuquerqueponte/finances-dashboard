@@ -18,7 +18,7 @@ import { currencyFormatter } from "../../utils/currencyFormatter";
 
 import { TransactionCard } from "../../components/TransactionCard";
 import { Header } from "../../components/Header";
-import * as Card from "../../components/Card";
+import { Card } from "../../components/Card";
 import { NoTransactions } from "../../components/NoTransactions";
 
 interface FinanceItemProps {
@@ -96,57 +96,64 @@ export const Dashboard: React.FC = () => {
   }, []);
 
   return (
-    <S.DashboardContainer>
+    <>
       <Header />
-      <S.CardValuesContainer>
-        <Card.Card
-          type="Total"
-          icon="Total"
-          value={totalValueCash ? currencyFormatter(totalValueCash) : "R$ 0,00"}
-        />
-
-        <Card.Card
-          type="Entrada"
-          icon="Entrada"
-          value={
-            financeCashEntrace
-              ? currencyFormatter(financeCashEntrace)
-              : "R$ 0,00"
-          }
-        />
-
-        <Card.Card
-          type="Saída"
-          icon="Saída"
-          value={
-            financeCashOutBack
-              ? `- ${currencyFormatter(financeCashOutBack)}`
-              : "R$ 0,00"
-          }
-        />
-      </S.CardValuesContainer>
-      <S.TransactionContainer>
-        {totalValueCash ? (
-          finances?.map((finance, index) => (
-            <TransactionCard
-              key={finance.id}
-              date={
-                index === 0 ||
-                finance.createdFormated !== finances[index - 1].createdFormated
-                  ? finance.createdFormated
-                  : ""
+      <S.DashboardContainer>
+        <div>
+          <S.CardValuesContainer>
+            <Card
+              type="Total"
+              icon="Total"
+              value={
+                totalValueCash ? currencyFormatter(totalValueCash) : "R$ 0,00"
               }
-              type={finance.type}
-              financeName={finance.nameOfFinance}
-              value={finance.value}
             />
-          ))
-        ) : (
-          <S.NoTransactionsContainer>
-            <NoTransactions name={user?.name} />
-          </S.NoTransactionsContainer>
-        )}
-      </S.TransactionContainer>
-    </S.DashboardContainer>
+
+            <Card
+              type="Entrada"
+              icon="Entrada"
+              value={
+                financeCashEntrace
+                  ? currencyFormatter(financeCashEntrace)
+                  : "R$ 0,00"
+              }
+            />
+
+            <Card
+              type="Saída"
+              icon="Saída"
+              value={
+                financeCashOutBack
+                  ? `- ${currencyFormatter(financeCashOutBack)}`
+                  : "R$ 0,00"
+              }
+            />
+          </S.CardValuesContainer>
+        </div>
+        <S.TransactionContainer>
+          {totalValueCash ? (
+            finances?.map((finance, index) => (
+              <TransactionCard
+                key={finance.id}
+                date={
+                  index === 0 ||
+                  finance.createdFormated !==
+                    finances[index - 1].createdFormated
+                    ? finance.createdFormated
+                    : ""
+                }
+                type={finance.type}
+                financeName={finance.nameOfFinance}
+                value={finance.value}
+              />
+            ))
+          ) : (
+            <S.NoTransactionsContainer>
+              <NoTransactions name={user?.name} />
+            </S.NoTransactionsContainer>
+          )}
+        </S.TransactionContainer>
+      </S.DashboardContainer>
+    </>
   );
 };
