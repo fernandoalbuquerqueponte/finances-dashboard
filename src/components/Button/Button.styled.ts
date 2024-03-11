@@ -2,32 +2,38 @@ import styled, { css } from "styled-components";
 import { ButtonProps } from ".";
 
 export const ButtonContainer = styled.div`
-    /* display: flex; */
-`
+  display: flex;
+`;
 
 export const Button = styled.button<ButtonProps>`
-   border: none;
-   font-weight: 600;
-   color: ${({ theme }) => theme.COLORS.white};
-   border-radius: 6px;
-   width: ${props => props.width}px;
-   height: ${props => props.height}px;
-   cursor: pointer;
-   transition: ease-in 1.5;
-   
-   &:hover{
-      opacity: 0.7;   
-   }
+  border: none;
+  font-weight: 600;
+  color: ${({ theme }) => theme.COLORS.white};
+  border-radius: 6px;
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
+  cursor: pointer;
+  transition: ease-in 1.5;
 
-     ${({ color, theme }) => color === 'primary' && css`
-        background-color: ${theme.COLORS.violet900};
-    `} 
+  &:hover {
+    opacity: 0.7;
+  }
 
-    ${({ color, theme }) => color === 'success' && css`
-        background-color: ${theme.COLORS.green600};
-    `} 
-
-    ${({ color, theme }) => color === 'danger' && css`
-        background-color: ${theme.COLORS.red700};
+  ${({ color, theme }) =>
+    color === "primary" &&
+    css`
+      background-color: ${theme.COLORS.violet900};
     `}
-`
+
+  ${({ color, theme }) =>
+    color === "success" &&
+    css`
+      background-color: ${theme.COLORS.green600};
+    `} 
+
+    ${({ color, theme }) =>
+    color === "danger" &&
+    css`
+      background-color: ${theme.COLORS.red700};
+    `}
+`;
