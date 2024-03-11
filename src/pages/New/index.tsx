@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { AuthContext } from "../../contexts/auth";
 
 import { db } from "../../services/firebaseConfig";
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 
 import { format } from "date-fns";
 import { toast } from "react-toastify";
@@ -59,26 +59,30 @@ export const New = () => {
       <Header />
 
       <form onSubmit={handleSubmit}>
-        <label>Tipo de finança:</label>
-        <S.RadioInputContainer>
-          <input
-            type="radio"
-            value="entrada"
-            onChange={handleChangeType}
-            checked={type === "entrada"}
-          />
-          <span>Entrada</span>
+        <label>Tipo de finança</label>
+        <div>
+          <div>
+            <input
+              type="radio"
+              value="entrada"
+              onChange={handleChangeType}
+              checked={type === "entrada"}
+            />
+            <span>Entrada</span>
+          </div>
 
-          <input
-            type="radio"
-            value="saída"
-            onChange={handleChangeType}
-            checked={type === "saída"}
-          />
-          <span>Saída</span>
-        </S.RadioInputContainer>
+          <div>
+            <input
+              type="radio"
+              value="saída"
+              onChange={handleChangeType}
+              checked={type === "saída"}
+            />
+            <span>Saída</span>
+          </div>
+        </div>
         <Input
-          placeholder="Ex: IPVA do carro "
+          placeholder="Ex: Compras"
           value={nameOfFinance}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setNameOfFinance(e.target.value)
@@ -97,7 +101,7 @@ export const New = () => {
         />
         <label>Descrição</label>
         <textarea
-          placeholder="Descreva sua descrição(opcional)"
+          placeholder="Descreva sua descrição (opcional)"
           value={description}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
             setDescription(e.target.value)
