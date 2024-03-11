@@ -11,12 +11,7 @@ import { Button } from "../../components/Button";
 
 import { db, storage } from "../../services/firebaseConfig";
 import { doc, updateDoc } from "firebase/firestore";
-import {
-  ref,
-  StorageReference,
-  uploadBytes,
-  getDownloadURL,
-} from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export const Profile = () => {
   const { user, setUser, storageData, handleLogoutUser } =
@@ -117,23 +112,22 @@ export const Profile = () => {
       <S.FormContainer onSubmit={handleSubmitFile}>
         <S.LabelAvatar>
           <span>
-            <UploadSimple size={30} />
+            <UploadSimple size={25} />
           </span>
           <input type="file" accept="image/*" onChange={handleChangeFile} />
-          <br />
           {avatarUrl === null ? (
             <img
-              src={"https://avatars.githubusercontent.com/u/118942227?v=4"}
+              src={profilePng}
               alt="Foto de perfil"
-              width={200}
-              height={200}
+              width={190}
+              height={190}
             />
           ) : (
             <img
               src={avatarUrl}
               alt="Foto de perfil"
-              width={200}
-              height={200}
+              width={190}
+              height={190}
             />
           )}
         </S.LabelAvatar>
@@ -156,7 +150,7 @@ export const Profile = () => {
         <div>
           <Button name="Salvar" color="primary" width={100} height={45} />
           <Button
-            name="Sair"
+            name="Sair da conta"
             color="danger"
             onClick={() => handleLogoutUser()}
             width={100}
