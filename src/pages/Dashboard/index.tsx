@@ -134,6 +134,9 @@ export const Dashboard: React.FC = () => {
           {totalValueCash ? (
             finances?.map((finance, index) => (
               <TransactionCard
+                onClick={() => {
+                  console.log(finance.nameOfFinance);
+                }}
                 key={finance.id}
                 date={
                   index === 0 ||
