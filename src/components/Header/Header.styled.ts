@@ -33,4 +33,10 @@ export const HeaderContainer = styled.div`
       color: ${({ theme }) => theme.COLORS.green600};
     }
   }
+
+  @media (max-width: 412px) {
+    > img {
+      display: none;
+    }
+  }
 `;

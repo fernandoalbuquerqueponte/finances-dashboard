@@ -13,12 +13,12 @@ export const Header = () => {
       </Link>
 
       <div>
-        <Link to="/dashboard">Home</Link>
+        <Link to="/dashboard">Finanças</Link>
         <Link to="/new">Adicionar</Link>
         <Link to="/profile">Perfil</Link>
       </div>
 
-      <img src={user?.avatarUrl as any} alt="" />
+      <img src={user?.avatarUrl as any} alt={user?.name} />
     </S.HeaderContainer>
   );
 };
