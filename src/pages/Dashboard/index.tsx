@@ -20,16 +20,17 @@ import { TransactionCard } from "../../components/TransactionCard";
 import { Header } from "../../components/Header";
 import { Card } from "../../components/Card";
 import { NoTransactions } from "../../components/NoTransactions";
+import { TransactionModal } from "../../components/TransactionModal";
 
-interface FinanceItemProps {
-  id: string;
-  type: "entrada" | "saída";
-  nameOfFinance: string;
-  userUid: string;
-  value: string;
-  description: string;
-  created: Date;
-  createdFormated: string;
+export interface FinanceItemProps {
+  id?: string;
+  type?: "entrada" | "saída";
+  nameOfFinance?: string;
+  userUid?: string;
+  value?: string;
+  description?: string;
+  created?: Date;
+  createdFormated?: string;
 }
 
 export const Dashboard: React.FC = () => {
@@ -37,8 +38,19 @@ export const Dashboard: React.FC = () => {
 
   const [finances, setFinances] = useState<FinanceItemProps[]>();
   const [totalValueCash, setTotalValueCash] = useState<any>();
+  const [showFinanceModal, setShowFinanceModal] = useState(false);
+  const [financeDetails, setFinanceDetails] = useState();
   const [financeCashOutBack, setFinanceCashOutBack] = useState<any>("");
   const [financeCashEntrace, setFinanceCashEntrace] = useState<any>("");
+
+  const handleOpenModal = async (finance: any) => {
+    setShowFinanceModal(true);
+    setFinanceDetails(finance);
+  };
+
+  const handleCloseModal = () => {
+    setShowFinanceModal(!showFinanceModal);
+  };
 
   const docRef = collection(db, "finances");
   useEffect(() => {
@@ -87,9 +99,6 @@ export const Dashboard: React.FC = () => {
           .reduce((acc, item) => acc + item.value, 0);
 
         setTotalValueCash(totalValue);
-
-        console.log(totalValue);
-        console.log(finances);
       });
     };
     FinancesLoaging();
@@ -135,7 +144,7 @@ export const Dashboard: React.FC = () => {
             finances?.map((finance, index) => (
               <TransactionCard
                 onClick={() => {
-                  console.log(finance.nameOfFinance);
+                  handleOpenModal(finance);
                 }}
                 key={finance.id}
                 date={
@@ -156,6 +165,12 @@ export const Dashboard: React.FC = () => {
             </S.NoTransactionsContainer>
           )}
         </S.TransactionContainer>
+        {showFinanceModal && (
+          <TransactionModal
+            closeModal={handleCloseModal}
+            finance={financeDetails}
+          />
+        )}
       </S.DashboardContainer>
     </>
   );
