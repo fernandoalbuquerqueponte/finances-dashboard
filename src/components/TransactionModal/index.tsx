@@ -7,6 +7,7 @@ import { currencyFormatter } from "../../utils/currencyFormatter";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../services/firebaseConfig";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 export interface TransactionModalProps extends FinanceItemProps {
   finance: FinanceItemProps | undefined;
@@ -64,7 +65,9 @@ export const TransactionModal = ({
           </tbody>
         </table>
         <div>
-          <Button name="Editar" width={100} height={40} color="primary" />
+          <Link to={`/new/${finance?.id}`}>
+            <Button name="Editar" width={100} height={40} color="primary" />
+          </Link>
           <Button
             name="Excluir"
             onClick={() => handleRemoveFinance(finance?.id)}

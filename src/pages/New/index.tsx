@@ -1,12 +1,12 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useMemo } from "react";
 import { AuthContext } from "../../contexts/auth";
 
 import { db } from "../../services/firebaseConfig";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
 
 import { format } from "date-fns";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { Header } from "../../components/Header";
 import { Input } from "../../components/Input";
@@ -15,6 +15,7 @@ import { Button } from "../../components/Button";
 import * as S from "./New.styled";
 
 export const New = () => {
+  const { id } = useParams();
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -28,6 +29,28 @@ export const New = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (id) {
+      const numericValue = parseFloat(value);
+      const docRef = doc(db, "finances", id);
+
+      await updateDoc(docRef, {
+        nameOfFinance: nameOfFinance,
+        description: description,
+        type: type,
+        value: numericValue,
+      })
+        .then(() => {
+          navigate("/dashboard");
+          toast.success("Finança atualizada com sucesso!", {
+            position: "bottom-right",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      return;
+    }
 
     if (type !== "" && nameOfFinance !== undefined && value !== "") {
       const numericValue = parseFloat(value);
@@ -62,6 +85,25 @@ export const New = () => {
       );
     }
   };
+
+  useMemo(() => {
+    const loadFinancesDetails = async (id: string | undefined) => {
+      if (id) {
+        try {
+          const docRef = doc(db, "finances", id);
+          await getDoc(docRef).then((snapshot) => {
+            setNameOfFinance(snapshot.data()?.nameOfFinance);
+            setType(snapshot.data()?.type);
+            setDescription(snapshot.data()?.description);
+            setValue(snapshot.data()?.value);
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    loadFinancesDetails(id);
+  }, [id]);
 
   return (
     <S.NewContainer>
@@ -118,7 +160,7 @@ export const New = () => {
         />
         <br />
         <Button
-          name="Salvar"
+          name={id ? "Salvar alterações" : "Salvar"}
           color="success"
           type="submit"
           width={90}
