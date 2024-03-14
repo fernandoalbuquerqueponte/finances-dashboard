@@ -29,29 +29,38 @@ export const New = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const numericValue = parseFloat(value);
+    if (type !== "" && nameOfFinance !== undefined && value !== "") {
+      const numericValue = parseFloat(value);
 
-    await addDoc(collection(db, "finances"), {
-      created: new Date(),
-      createdFormated: format(new Date(), "dd/MM/yyyy"),
-      type: type,
-      nameOfFinance: nameOfFinance,
-      value: numericValue,
-      description: description,
-      uid: user?.uid,
-    })
-      .then(() => {
-        navigate("/dashboard");
-        toast.success("Finança adicionada com sucesso!", {
-          position: "bottom-right",
-        });
+      await addDoc(collection(db, "finances"), {
+        created: new Date(),
+        createdFormated: format(new Date(), "dd/MM/yyyy"),
+        type: type,
+        nameOfFinance: nameOfFinance,
+        value: numericValue,
+        description: description,
+        uid: user?.uid,
       })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Erro ao cadastrar finança", { position: "bottom-right" });
-        setNameOfFinance("");
-        setDescription("");
-      });
+        .then(() => {
+          navigate("/dashboard");
+          toast.success("Finança adicionada com sucesso!", {
+            position: "bottom-right",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error("Erro ao cadastrar finança", {
+            position: "bottom-right",
+          });
+          setNameOfFinance("");
+          setDescription("");
+        });
+    } else {
+      toast.error(
+        "Erro ao cadastrar finança Por favor preencha todos os campos",
+        { position: "bottom-right" }
+      );
+    }
   };
 
   return (
