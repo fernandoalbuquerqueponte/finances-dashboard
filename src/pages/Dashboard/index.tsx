@@ -39,11 +39,13 @@ export const Dashboard: React.FC = () => {
   const [finances, setFinances] = useState<FinanceItemProps[]>();
   const [totalValueCash, setTotalValueCash] = useState<any>();
   const [showFinanceModal, setShowFinanceModal] = useState(false);
-  const [financeDetails, setFinanceDetails] = useState();
+  const [financeDetails, setFinanceDetails] = useState<
+    FinanceItemProps | undefined
+  >();
   const [financeCashOutBack, setFinanceCashOutBack] = useState<any>("");
   const [financeCashEntrace, setFinanceCashEntrace] = useState<any>("");
 
-  const handleOpenModal = async (finance: any) => {
+  const handleOpenModal = async (finance: FinanceItemProps) => {
     setShowFinanceModal(true);
     setFinanceDetails(finance);
   };

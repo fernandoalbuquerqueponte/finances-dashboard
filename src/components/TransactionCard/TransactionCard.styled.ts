@@ -5,7 +5,8 @@ import { TransactionCardProps } from "./index";
 
 export const TransactionCard = styled.div<TransactionCardProps>`
   display: flex;
-  width: 100%;
+  max-width: 100%;
+  width: 750px;
   margin: 9px auto;
   flex-direction: column;
   padding: 0 10px;

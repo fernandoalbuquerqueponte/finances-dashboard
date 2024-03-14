@@ -17,7 +17,10 @@ export const TransactionModal = ({
   finance,
   closeModal,
 }: TransactionModalProps) => {
-  const handleRemoveFinance = async (id: any) => {
+  const handleRemoveFinance = async (id: string | undefined) => {
+    if (!id) {
+      return toast.error("erro ao excluir transação");
+    }
     const docRef = doc(db, "finances", id);
 
     await deleteDoc(docRef)
