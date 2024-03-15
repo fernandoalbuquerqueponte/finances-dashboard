@@ -3,7 +3,7 @@ import { ArrowCircleUp, ArrowCircleDown } from "@phosphor-icons/react";
 
 import { TransactionCardProps } from "./index";
 
-export const TransactionCard = styled.div<TransactionCardProps>`
+export const TransactionCard = styled.div`
   display: flex;
   max-width: 100%;
   width: 750px;

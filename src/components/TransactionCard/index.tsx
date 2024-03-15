@@ -19,9 +19,9 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
   onClick,
 }) => {
   return (
-    <S.TransactionCard onClick={onClick}>
+    <S.TransactionCard>
       {date && <p>{date}</p>}
-      <div>
+      <div onClick={onClick}>
         {type === "entrada" ? <S.CashEntraceIcon /> : <S.CashOutFlowIcon />}
         <div>
           <span>{financeName}</span>
