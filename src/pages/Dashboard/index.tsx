@@ -11,7 +11,6 @@ import {
   orderBy,
   limit,
   where,
-  onSnapshot,
 } from "firebase/firestore";
 
 import { currencyFormatter } from "../../utils/currencyFormatter";
@@ -37,6 +36,7 @@ export const Dashboard: React.FC = () => {
   const { user } = useContext(AuthContext);
 
   const [finances, setFinances] = useState<FinanceItemProps[]>();
+  const [loadingFinances, setLoadingFinances] = useState(false);
   const [totalValueCash, setTotalValueCash] = useState<any>();
   const [showFinanceModal, setShowFinanceModal] = useState(false);
   const [financeDetails, setFinanceDetails] = useState();
@@ -55,19 +55,19 @@ export const Dashboard: React.FC = () => {
   const docRef = collection(db, "finances");
   useEffect(() => {
     const FinancesLoaging = async () => {
-      const q = query(
-        docRef,
-        orderBy("created", "desc"),
-        limit(5),
-        where("uid", "==", user?.uid)
-      );
+      setLoadingFinances(true);
+      try {
+        const q = query(
+          docRef,
+          // orderBy("created", "desc"),
+          limit(5),
+          where("uid", "==", user?.uid)
+        );
 
-      const querySnapshot = await getDocs(q);
-
-      const unsub = onSnapshot(q, (snapshot) => {
+        const querySnapshot = await getDocs(q);
         let lista: any[] = [];
 
-        snapshot.forEach((doc) => {
+        querySnapshot.forEach((doc) => {
           lista.push({
             id: doc.id,
             created: doc.data().created,
@@ -99,7 +99,12 @@ export const Dashboard: React.FC = () => {
           .reduce((acc, item) => acc + item.value, 0);
 
         setTotalValueCash(totalValue);
-      });
+        setLoadingFinances(false);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoadingFinances(false);
+      }
     };
     FinancesLoaging();
   }, []);
@@ -108,61 +113,67 @@ export const Dashboard: React.FC = () => {
     <>
       <Header />
       <S.DashboardContainer>
-        <div>
-          <S.CardValuesContainer>
-            <Card
-              type="Total"
-              icon="Total"
-              value={
-                totalValueCash ? currencyFormatter(totalValueCash) : "R$ 0,00"
-              }
-            />
+        <S.CardValuesContainer>
+          <Card
+            type="Total"
+            icon="Total"
+            value={
+              totalValueCash ? currencyFormatter(totalValueCash) : "R$ 0,00"
+            }
+          />
 
-            <Card
-              type="Entrada"
-              icon="Entrada"
-              value={
-                financeCashEntrace
-                  ? currencyFormatter(financeCashEntrace)
-                  : "R$ 0,00"
-              }
-            />
+          <Card
+            type="Entrada"
+            icon="Entrada"
+            value={
+              financeCashEntrace
+                ? currencyFormatter(financeCashEntrace)
+                : "R$ 0,00"
+            }
+          />
 
-            <Card
-              type="Saída"
-              icon="Saída"
-              value={
-                financeCashOutBack
-                  ? `- ${currencyFormatter(financeCashOutBack)}`
-                  : "R$ 0,00"
-              }
-            />
-          </S.CardValuesContainer>
-        </div>
+          <Card
+            type="Saída"
+            icon="Saída"
+            value={
+              financeCashOutBack
+                ? `- ${currencyFormatter(financeCashOutBack)}`
+                : "R$ 0,00"
+            }
+          />
+        </S.CardValuesContainer>
         <S.TransactionContainer>
-          {totalValueCash ? (
-            finances?.map((finance, index) => (
-              <TransactionCard
-                onClick={() => {
-                  handleOpenModal(finance);
-                }}
-                key={finance.id}
-                date={
-                  index === 0 ||
-                  finance.createdFormated !==
-                    finances[index - 1].createdFormated
-                    ? finance.createdFormated
-                    : ""
-                }
-                type={finance.type}
-                financeName={finance.nameOfFinance}
-                value={finance.value}
-              />
-            ))
+          {loadingFinances ? (
+            <S.LoadingContainer>
+              <h1>Carregando...</h1>
+            </S.LoadingContainer>
           ) : (
-            <S.NoTransactionsContainer>
-              <NoTransactions name={user?.name} />
-            </S.NoTransactionsContainer>
+            <div>
+              {totalValueCash ? (
+                finances?.map((finance, index) => (
+                  <TransactionCard
+                    onClick={() => {
+                      handleOpenModal(finance);
+                    }}
+                    key={finance.id}
+                    date={
+                      index === 0 ||
+                      finance.createdFormated !==
+                        finances[index - 1].createdFormated
+                        ? finance.createdFormated
+                        : ""
+                    }
+                    type={finance.type}
+                    financeName={finance.nameOfFinance}
+                    value={finance.value}
+                  />
+                ))
+              ) : (
+                <S.NoTransactionsContainer>
+                  <NoTransactions name={user?.name} />
+                </S.NoTransactionsContainer>
+              )}
+            </div>
           )}
         </S.TransactionContainer>
         {showFinanceModal && (

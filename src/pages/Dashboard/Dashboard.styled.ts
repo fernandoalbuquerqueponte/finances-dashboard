@@ -33,4 +33,14 @@ export const TransactionContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: 50px;
+`;
+
+export const LoadingContainer = styled.div`
+  margin: 50px auto;
+  > h1 {
+    color: ${({ theme }) => theme.COLORS.neutral300};
+    font-size: 20px;
+    font-weight: 400;
+  }
 `;
