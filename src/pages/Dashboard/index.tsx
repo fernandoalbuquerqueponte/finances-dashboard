@@ -11,6 +11,7 @@ import {
   orderBy,
   limit,
   where,
+  onSnapshot,
 } from "firebase/firestore";
 
 import { currencyFormatter } from "../../utils/currencyFormatter";
@@ -20,6 +21,7 @@ import { Header } from "../../components/Header";
 import { Card } from "../../components/Card";
 import { NoTransactions } from "../../components/NoTransactions";
 import { TransactionModal } from "../../components/TransactionModal";
+import { Loading } from "../../components/Loading";
 
 export interface FinanceItemProps {
   id?: string;
@@ -35,11 +37,12 @@ export interface FinanceItemProps {
 export const Dashboard: React.FC = () => {
   const { user } = useContext(AuthContext);
 
-  const [finances, setFinances] = useState<FinanceItemProps[]>();
-  const [loadingFinances, setLoadingFinances] = useState(false);
+  const [finances, setFinances] = useState<FinanceItemProps[]>([]);
+  const [loadingFinances, setLoadingFinances] = useState(true);
+  const [isEmpty, setIsEmpty] = useState(false);
   const [totalValueCash, setTotalValueCash] = useState<any>();
   const [showFinanceModal, setShowFinanceModal] = useState(false);
-  const [financeDetails, setFinanceDetails] = useState();
+  const [financeDetails, setFinanceDetails] = useState<any | null>(null);
   const [financeCashOutBack, setFinanceCashOutBack] = useState<any>("");
   const [financeCashEntrace, setFinanceCashEntrace] = useState<any>("");
 
@@ -52,22 +55,24 @@ export const Dashboard: React.FC = () => {
     setShowFinanceModal(!showFinanceModal);
   };
 
-  const docRef = collection(db, "finances");
   useEffect(() => {
     const FinancesLoaging = async () => {
+      const docRef = collection(db, "finances");
       setLoadingFinances(true);
-      try {
-        const q = query(
-          docRef,
-          orderBy("created", "desc"),
-          limit(5),
-          where("uid", "==", user?.uid)
-        );
 
-        const querySnapshot = await getDocs(q);
+      const q = query(
+        docRef,
+        orderBy("created", "desc"),
+        limit(5),
+        where("uid", "==", user?.uid)
+      );
+
+      // const querySnapshot = await getDocs(q);
+      const unsub = onSnapshot(q, (snapshot) => {
+        // let isCollectionEmpty = snapshot.size === 0;
+
         let lista: any[] = [];
-
-        querySnapshot.forEach((doc) => {
+        snapshot.forEach((doc) => {
           lista.push({
             id: doc.id,
             created: doc.data().created,
@@ -81,33 +86,37 @@ export const Dashboard: React.FC = () => {
             typeSaida: doc.data().typeSaida,
           });
         });
-        setFinances(lista);
 
-        const TotalValueOut = lista
-          .filter((type) => type.type === "saída")
-          .reduce((acc, item) => acc + item.value, 0);
+        if (lista.length === 0) {
+          setIsEmpty(true);
+        } else {
+          setIsEmpty(false);
+          setFinances(lista);
+          const TotalValueOut = lista
+            .filter((type) => type.type === "saída")
+            .reduce((acc, item) => acc + item.value, 0);
 
-        setFinanceCashOutBack(TotalValueOut);
+          setFinanceCashOutBack(TotalValueOut);
 
-        const totalValueEntrace = lista
-          .filter((type) => type.type === "entrada")
-          .reduce((acc, item) => acc + item.value, 0);
-        setFinanceCashEntrace(totalValueEntrace);
+          const totalValueEntrace = lista
+            .filter((type) => type.type === "entrada")
+            .reduce((acc, item) => acc + item.value, 0);
+          setFinanceCashEntrace(totalValueEntrace);
 
-        const totalValue = lista
-          .filter((type) => type.type === "entrada" || type.type === "saída")
-          .reduce((acc, item) => acc + item.value, 0);
+          const totalValue = lista
+            .filter((type) => type.type === "entrada" || type.type === "saída")
+            .reduce((acc, item) => acc + item.value, 0);
 
-        setTotalValueCash(totalValue);
+          setTotalValueCash(totalValue);
+        }
         setLoadingFinances(false);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoadingFinances(false);
-      }
+      });
+      return () => {
+        unsub();
+      };
     };
     FinancesLoaging();
-  }, []);
+  }, [user]);
 
   return (
     <>
@@ -145,34 +154,32 @@ export const Dashboard: React.FC = () => {
         <S.TransactionContainer>
           {loadingFinances ? (
             <S.LoadingContainer>
-              <h1>Carregando...</h1>
+              <Loading />
             </S.LoadingContainer>
+          ) : isEmpty ? (
+            <S.NoTransactionsContainer>
+              <NoTransactions name={user?.name} />
+            </S.NoTransactionsContainer>
           ) : (
             <div>
-              {totalValueCash ? (
-                finances?.map((finance, index) => (
-                  <TransactionCard
-                    onClick={() => {
-                      handleOpenModal(finance);
-                    }}
-                    key={finance.id}
-                    date={
-                      index === 0 ||
-                      finance.createdFormated !==
-                        finances[index - 1].createdFormated
-                        ? finance.createdFormated
-                        : ""
-                    }
-                    type={finance.type}
-                    financeName={finance.nameOfFinance}
-                    value={finance.value}
-                  />
-                ))
-              ) : (
-                <S.NoTransactionsContainer>
-                  <NoTransactions name={user?.name} />
-                </S.NoTransactionsContainer>
-              )}
+              {finances.map((finance, index) => (
+                <TransactionCard
+                  onClick={() => {
+                    handleOpenModal(finance);
+                  }}
+                  key={finance.id}
+                  date={
+                    index === 0 ||
+                    finance.createdFormated !==
+                      finances[index - 1].createdFormated
+                      ? finance.createdFormated
+                      : ""
+                  }
+                  type={finance.type}
+                  financeName={finance.nameOfFinance}
+                  value={finance.value}
+                />
+              ))}
             </div>
           )}
         </S.TransactionContainer>
