@@ -5,7 +5,6 @@ import * as S from "./Dashboard.styled";
 
 import { db } from "../../services/firebaseConfig";
 import {
-  getDocs,
   collection,
   query,
   orderBy,
@@ -16,18 +15,19 @@ import {
 
 import { currencyFormatter } from "../../utils/currencyFormatter";
 
+import { TransactionModal } from "../../components/TransactionModal";
 import { TransactionCard } from "../../components/TransactionCard";
+import { NoTransactions } from "../../components/NoTransactions";
+import { SpinnerLoading } from "../../components/Spinner";
 import { Header } from "../../components/Header";
 import { Card } from "../../components/Card";
-import { NoTransactions } from "../../components/NoTransactions";
-import { TransactionModal } from "../../components/TransactionModal";
 
 export interface FinanceItemProps {
   id?: string;
   type?: "entrada" | "saída";
   nameOfFinance?: string;
-  userUid?: string;
-  value?: string;
+  uid?: string;
+  value?: number;
   description?: string;
   created?: Date;
   createdFormated?: string;
@@ -36,14 +36,16 @@ export interface FinanceItemProps {
 export const Dashboard: React.FC = () => {
   const { user } = useContext(AuthContext);
 
-  const [finances, setFinances] = useState<FinanceItemProps[]>();
-  const [totalValueCash, setTotalValueCash] = useState<any>();
+  const [finances, setFinances] = useState<FinanceItemProps[]>([]);
+  const [loadingFinances, setLoadingFinances] = useState(true);
+  const [isEmpty, setIsEmpty] = useState(false);
   const [showFinanceModal, setShowFinanceModal] = useState(false);
-  const [financeDetails, setFinanceDetails] = useState();
-  const [financeCashOutBack, setFinanceCashOutBack] = useState<any>("");
-  const [financeCashEntrace, setFinanceCashEntrace] = useState<any>("");
+  const [financeDetails, setFinanceDetails] = useState<FinanceItemProps>();
+  const [totalValueCash, setTotalValueCash] = useState<number>();
+  const [financeCashOutBack, setFinanceCashOutBack] = useState<number>();
+  const [financeCashEntrace, setFinanceCashEntrace] = useState<number>();
 
-  const handleOpenModal = async (finance: any) => {
+  const handleOpenModal = async (finance: FinanceItemProps) => {
     setShowFinanceModal(true);
     setFinanceDetails(finance);
   };
@@ -52,8 +54,8 @@ export const Dashboard: React.FC = () => {
     setShowFinanceModal(!showFinanceModal);
   };
 
-  const docRef = collection(db, "finances");
   useEffect(() => {
+    const docRef = collection(db, "finances");
     const FinancesLoaging = async () => {
       const q = query(
         docRef,
@@ -62,10 +64,8 @@ export const Dashboard: React.FC = () => {
         where("uid", "==", user?.uid)
       );
 
-      const querySnapshot = await getDocs(q);
-
-      const unsub = onSnapshot(q, (snapshot) => {
-        let lista: any[] = [];
+      onSnapshot(q, (snapshot) => {
+        let lista: FinanceItemProps[] = [];
 
         snapshot.forEach((doc) => {
           lista.push({
@@ -77,28 +77,35 @@ export const Dashboard: React.FC = () => {
             type: doc.data().type,
             uid: doc.data().uid,
             value: doc.data().value,
-            typeEntrada: doc.data().typeEntrada,
-            typeSaida: doc.data().typeSaida,
           });
         });
+
+        if (lista.length <= 0) {
+          setIsEmpty(true);
+        } else {
+          setIsEmpty(false);
+        }
         setFinances(lista);
 
-        const TotalValueOut = lista
-          .filter((type) => type.type === "saída")
-          .reduce((acc, item) => acc + item.value, 0);
+        if (lista.length > 0) {
+          const TotalValueOut = lista
+            .filter((type) => type.type === "saída")
+            .reduce((acc, item) => acc + (item.value as number), 0);
 
-        setFinanceCashOutBack(TotalValueOut);
+          setFinanceCashOutBack(TotalValueOut);
 
-        const totalValueEntrace = lista
-          .filter((type) => type.type === "entrada")
-          .reduce((acc, item) => acc + item.value, 0);
-        setFinanceCashEntrace(totalValueEntrace);
+          const totalValueEntrace = lista
+            .filter((type) => type.type === "entrada")
+            .reduce((acc, item) => acc + (item.value as number), 0);
+          setFinanceCashEntrace(totalValueEntrace);
 
-        const totalValue = lista
-          .filter((type) => type.type === "entrada" || type.type === "saída")
-          .reduce((acc, item) => acc + item.value, 0);
+          const totalValue = lista
+            .filter((type) => type.type === "entrada" || type.type === "saída")
+            .reduce((acc, item) => acc + (item.value as number), 0);
 
-        setTotalValueCash(totalValue);
+          setTotalValueCash(totalValue);
+        }
+        setLoadingFinances(false);
       });
     };
     FinancesLoaging();
@@ -114,7 +121,9 @@ export const Dashboard: React.FC = () => {
               type="Total"
               icon="Total"
               value={
-                totalValueCash ? currencyFormatter(totalValueCash) : "R$ 0,00"
+                totalValueCash
+                  ? currencyFormatter(String(totalValueCash))
+                  : "R$ 0,00"
               }
             />
 
@@ -123,7 +132,7 @@ export const Dashboard: React.FC = () => {
               icon="Entrada"
               value={
                 financeCashEntrace
-                  ? currencyFormatter(financeCashEntrace)
+                  ? currencyFormatter(String(financeCashEntrace))
                   : "R$ 0,00"
               }
             />
@@ -133,36 +142,42 @@ export const Dashboard: React.FC = () => {
               icon="Saída"
               value={
                 financeCashOutBack
-                  ? `- ${currencyFormatter(financeCashOutBack)}`
+                  ? `- ${currencyFormatter(String(financeCashOutBack))}`
                   : "R$ 0,00"
               }
             />
           </S.CardValuesContainer>
         </div>
         <S.TransactionContainer>
-          {totalValueCash ? (
-            finances?.map((finance, index) => (
-              <TransactionCard
-                onClick={() => {
-                  handleOpenModal(finance);
-                }}
-                key={finance.id}
-                date={
-                  index === 0 ||
-                  finance.createdFormated !==
-                    finances[index - 1].createdFormated
-                    ? finance.createdFormated
-                    : ""
-                }
-                type={finance.type}
-                financeName={finance.nameOfFinance}
-                value={finance.value}
-              />
-            ))
-          ) : (
+          {loadingFinances ? (
+            <S.LoadingContainer>
+              <SpinnerLoading />
+            </S.LoadingContainer>
+          ) : isEmpty ? (
             <S.NoTransactionsContainer>
               <NoTransactions name={user?.name} />
             </S.NoTransactionsContainer>
+          ) : (
+            <div>
+              {finances?.map((finance, index) => (
+                <TransactionCard
+                  onClick={() => {
+                    handleOpenModal(finance);
+                  }}
+                  key={finance.id}
+                  date={
+                    index === 0 ||
+                    finance.createdFormated !==
+                      finances[index - 1].createdFormated
+                      ? finance.createdFormated
+                      : ""
+                  }
+                  type={finance.type}
+                  financeName={finance.nameOfFinance}
+                  value={finance.value}
+                />
+              ))}
+            </div>
           )}
         </S.TransactionContainer>
         {showFinanceModal && (
@@ -171,6 +186,8 @@ export const Dashboard: React.FC = () => {
             finance={financeDetails}
           />
         )}
+
+        {/* <SpinnerLoading /> */}
       </S.DashboardContainer>
     </>
   );

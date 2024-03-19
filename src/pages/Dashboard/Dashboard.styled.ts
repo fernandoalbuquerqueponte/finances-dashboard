@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 export const DashboardContainer = styled.div`
   width: 100%;
@@ -27,6 +27,10 @@ export const NoTransactionsContainer = styled.div`
   max-width: 100%;
   justify-content: center;
   margin: 0 15px;
+`;
+
+export const LoadingContainer = styled.div`
+  margin: 70px auto;
 `;
 
 export const TransactionContainer = styled.div`

@@ -7,7 +7,7 @@ export interface TransactionCardProps {
   financeName?: string;
   type?: "entrada" | "saída";
   date?: string;
-  value?: string;
+  value?: number;
   onClick: () => void;
 }
 
@@ -26,10 +26,10 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
         <div>
           <span>{financeName}</span>
           {type === "entrada" && (
-            <S.Entrace>{currencyFormatter(value)}</S.Entrace>
+            <S.Entrace>{currencyFormatter(String(value))}</S.Entrace>
           )}
           {type === "saída" && (
-            <S.OutFlow>{currencyFormatter(value)}</S.OutFlow>
+            <S.OutFlow>{currencyFormatter(String(value))}</S.OutFlow>
           )}
         </div>
       </div>
