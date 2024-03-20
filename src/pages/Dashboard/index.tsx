@@ -60,7 +60,7 @@ export const Dashboard: React.FC = () => {
       const q = query(
         docRef,
         orderBy("created", "desc"),
-        limit(5),
+        limit(10),
         where("uid", "==", user?.uid)
       );
 
@@ -87,24 +87,23 @@ export const Dashboard: React.FC = () => {
         }
         setFinances(lista);
 
-        if (lista.length > 0) {
-          const TotalValueOut = lista
-            .filter((type) => type.type === "saída")
-            .reduce((acc, item) => acc + (item.value as number), 0);
+        const TotalValueOut = lista
+          .filter((type) => type.type === "saída")
+          .reduce((acc, item) => acc + (item.value as number), 0);
 
-          setFinanceCashOutBack(TotalValueOut);
+        setFinanceCashOutBack(TotalValueOut);
 
-          const totalValueEntrace = lista
-            .filter((type) => type.type === "entrada")
-            .reduce((acc, item) => acc + (item.value as number), 0);
-          setFinanceCashEntrace(totalValueEntrace);
+        const totalValueEntrace = lista
+          .filter((type) => type.type === "entrada")
+          .reduce((acc, item) => acc + (item.value as number), 0);
+        setFinanceCashEntrace(totalValueEntrace);
 
-          const totalValue = lista
-            .filter((type) => type.type === "entrada" || type.type === "saída")
-            .reduce((acc, item) => acc + (item.value as number), 0);
+        const totalValue = lista
+          .filter((type) => type.type === "entrada" || type.type === "saída")
+          .reduce((acc, item) => acc + (item.value as number), 0);
 
-          setTotalValueCash(totalValue);
-        }
+        setTotalValueCash(totalValue);
+
         setLoadingFinances(false);
       });
     };

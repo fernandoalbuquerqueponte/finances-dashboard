@@ -58,8 +58,8 @@ export const TransactionModal = ({
               </td>
               <td data-label="Valor">
                 {finance?.type === "entrada"
-                  ? currencyFormatter(finance?.value as string)
-                  : currencyFormatter(finance?.value as string)}
+                  ? currencyFormatter(String(finance?.value))
+                  : currencyFormatter(String(finance?.value))}
               </td>
             </tr>
           </tbody>
