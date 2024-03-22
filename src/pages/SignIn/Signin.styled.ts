@@ -36,6 +36,12 @@ export const Container = styled.div`
     margin-top: 50px;
     flex-direction: column;
     gap: 15px;
+    > div {
+      > span {
+        font-size: 13px;
+        color: ${({ theme }) => theme.COLORS.red700};
+      }
+    }
   }
 
   > div {

@@ -2,24 +2,36 @@ import { useContext, useState } from "react";
 import * as S from "./Signin.styled";
 
 import { AuthContext } from "../../contexts/auth";
+import { useForm } from "react-hook-form";
 
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import logoSvg from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const createUserSchema = z.object({
+  email: z.string().email("Formato de email invalido"),
+  password: z.string().min(6, "A senha precisa de no minimo 6 caracteres"),
+});
+
+type createUserSchema = z.infer<typeof createUserSchema>;
+
 export const SignIn = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<createUserSchema>({
+    resolver: zodResolver(createUserSchema),
+  });
 
   const { signIn, loadingAuth } = useContext(AuthContext);
 
-  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (email !== "" && email !== "") {
-      await signIn(email, password);
-    }
+  const handleSignIn = async (data: createUserSchema) => {
+    await signIn(data.email, data.password);
   };
 
   return (
@@ -27,24 +39,28 @@ export const SignIn = () => {
       <img src={logoSvg} alt="Dev" />
       <h1>FinancesDev</h1>
       <h3>Crie e gerencie suas finanças de forma fácil</h3>
-      <form onSubmit={handleSignIn}>
-        <Input
-          placeholder="Digite o seu email"
-          type="text"
-          label="E-mail"
-          value={email}
-          autoComplete="off"
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      <form onSubmit={handleSubmit(handleSignIn)}>
+        <div>
+          <Input
+            placeholder="Digite o seu email"
+            label="E-mail"
+            type="text"
+            hasError={!!errors.email}
+            {...register("email")}
+          />
+          {errors.email?.message && <span>{errors.email.message}</span>}
+        </div>
 
-        <Input
-          label="Senha"
-          placeholder="Digite sua senha secreta"
-          type="text"
-          autoComplete="off"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div>
+          <Input
+            label="Senha"
+            placeholder="Digite sua senha secreta"
+            type="password"
+            hasError={!!errors.password}
+            {...register("password")}
+          />
+          {errors.password?.message && <span>{errors.password.message}</span>}
+        </div>
 
         <Button
           name={loadingAuth ? "Carregando" : "Fazer Login"}

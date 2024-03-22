@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { InputProps } from "./index";
 
 export const InputContainer = styled.div`
   display: flex;
@@ -14,7 +15,7 @@ export const Label = styled.label`
   padding-left: 0.6rem;
 `;
 
-export const Input = styled.input`
+export const Input = styled.input<InputProps>`
   height: 45px;
   background-color: #1e1e21;
   padding: 1rem;
@@ -24,7 +25,9 @@ export const Input = styled.input`
   outline: none;
 
   &:focus {
-    border: 2px solid ${({ theme }) => theme.COLORS.green900};
+    border: 2px solid
+      ${({ theme, hasError }) =>
+        hasError ? theme.COLORS.red700 : theme.COLORS.green600};
   }
 
   &::placeholder {
