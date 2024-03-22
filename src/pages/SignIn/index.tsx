@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import * as S from "./Signin.styled";
 
 import { AuthContext } from "../../contexts/auth";
@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { SpinnerLoading } from "../../components/Spinner";
 
 const createUserSchema = z.object({
   email: z.string().email("Formato de email invalido"),
@@ -46,6 +47,7 @@ export const SignIn = () => {
             label="E-mail"
             type="text"
             hasError={!!errors.email}
+            autoComplete="off"
             {...register("email")}
           />
           {errors.email?.message && <span>{errors.email.message}</span>}
@@ -62,13 +64,13 @@ export const SignIn = () => {
           {errors.password?.message && <span>{errors.password.message}</span>}
         </div>
 
-        <Button
-          name={loadingAuth ? "Carregando" : "Fazer Login"}
-          width={400}
-          height={35}
-          color="success"
-          type="submit"
-        />
+        <Button width={400} height={35} color="success" type="submit">
+          {loadingAuth ? (
+            <SpinnerLoading size={22} color="#121214" />
+          ) : (
+            "Fazer Login"
+          )}
+        </Button>
       </form>
       <div>
         <p>Ainda não tem uma conta?</p>

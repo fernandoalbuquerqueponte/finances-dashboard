@@ -148,14 +148,17 @@ export const Profile = () => {
           onChange={(e) => setName(e.target.value)}
         />
         <div>
-          <Button name="Salvar" color="primary" width={100} height={45} />
+          <Button color="primary" width={100} height={45}>
+            Salvar
+          </Button>
           <Button
-            name="Sair da conta"
             color="danger"
             onClick={() => handleLogoutUser()}
             width={100}
             height={45}
-          />
+          >
+            Sair da conta
+          </Button>
         </div>
       </S.FormContainer>
     </S.ProfileContainer>

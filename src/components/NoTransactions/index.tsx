@@ -14,12 +14,9 @@ export const NoTransactions = ({ name }: NoTransactionsProps) => {
       </h1>
       <div>
         <Link to="/new">
-          <Button
-            width={150}
-            height={50}
-            color="primary"
-            name="Criar nova finança"
-          />
+          <Button width={150} height={50} color="primary">
+            Criar nova finança!
+          </Button>
         </Link>
       </div>
     </S.NoTransactionsContainer>

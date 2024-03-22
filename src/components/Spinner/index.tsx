@@ -1,8 +1,12 @@
 import ClipLoader from "react-spinners/ClipLoader";
-export const SpinnerLoading = () => {
+interface LoadingProps {
+  color?: string;
+  size?: number;
+}
+export const SpinnerLoading = ({ color, size = 25 }: LoadingProps) => {
   return (
     <div>
-      <ClipLoader speedMultiplier={1} color="#16a34a" />
+      <ClipLoader size={size} speedMultiplier={1} color={color} />
     </div>
   );
 };

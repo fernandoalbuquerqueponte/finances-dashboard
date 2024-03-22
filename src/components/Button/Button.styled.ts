@@ -1,13 +1,12 @@
 import styled, { css } from "styled-components";
 import { ButtonProps } from ".";
 
-export const ButtonContainer = styled.div`
-  display: flex;
-`;
-
 export const Button = styled.button<ButtonProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: none;
-  font-weight: 600;
+  font-weight: 500;
   color: ${({ theme }) => theme.COLORS.white};
   border-radius: 6px;
   width: ${(props) => props.width}px;

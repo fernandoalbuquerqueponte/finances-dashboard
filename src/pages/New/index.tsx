@@ -159,13 +159,9 @@ export const New = () => {
           }
         />
         <br />
-        <Button
-          name={id ? "Salvar alterações" : "Salvar"}
-          color="success"
-          type="submit"
-          width={90}
-          height={50}
-        />
+        <Button color="success" type="submit" width={90} height={50}>
+          {id ? "Salvar alterações" : "Salvar"}
+        </Button>
       </form>
     </S.NewContainer>
   );

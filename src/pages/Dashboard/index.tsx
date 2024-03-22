@@ -150,7 +150,7 @@ export const Dashboard: React.FC = () => {
         <S.TransactionContainer>
           {loadingFinances ? (
             <S.LoadingContainer>
-              <SpinnerLoading />
+              <SpinnerLoading size={45} color="#16a34a" />
             </S.LoadingContainer>
           ) : isEmpty ? (
             <S.NoTransactionsContainer>
@@ -185,8 +185,6 @@ export const Dashboard: React.FC = () => {
             finance={financeDetails}
           />
         )}
-
-        {/* <SpinnerLoading /> */}
       </S.DashboardContainer>
     </>
   );
