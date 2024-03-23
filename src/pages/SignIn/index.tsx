@@ -14,8 +14,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SpinnerLoading } from "../../components/Spinner";
 
 const createUserSchema = z.object({
-  email: z.string().email("Formato de email invalido"),
-  password: z.string().min(6, "A senha precisa de no minimo 6 caracteres"),
+  email: z
+    .string()
+    .email("Formato de email invalido")
+    .nonempty("O email é obrigatório"),
+  password: z
+    .string()
+    .min(6, "A senha precisa de no minimo 6 caracteres")
+    .nonempty("A senha é obrigatória"),
 });
 
 type createUserSchema = z.infer<typeof createUserSchema>;
