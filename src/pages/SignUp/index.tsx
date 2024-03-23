@@ -5,6 +5,8 @@ import { AuthContext } from "../../contexts/auth";
 
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
+import { SpinnerLoading } from "../../components/Spinner";
+
 import logoSvg from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 
@@ -59,7 +61,6 @@ export const SignUp = () => {
             hasError={!!errors.name}
             {...register("name")}
           />
-
           {errors.name?.message && <span>{errors.name.message}</span>}
         </div>
         <div>
@@ -87,7 +88,11 @@ export const SignUp = () => {
         </div>
 
         <Button width={400} height={35} color="success" type="submit">
-          {loadingAuth ? "Carregando" : "Fazer Login"}
+          {loadingAuth ? (
+            <SpinnerLoading size={22} color="#121214" />
+          ) : (
+            "Fazer Login"
+          )}
         </Button>
       </form>
       <div>
