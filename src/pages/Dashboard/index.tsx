@@ -21,6 +21,11 @@ import { NoTransactions } from "../../components/NoTransactions";
 import { SpinnerLoading } from "../../components/Spinner";
 import { Header } from "../../components/Header";
 import { Card } from "../../components/Card";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Button } from "../../components/Button";
+import { Link } from "react-router-dom";
+import { Calendar } from "@phosphor-icons/react";
 
 export interface FinanceItemProps {
   id?: string;
@@ -52,6 +57,10 @@ export const Dashboard: React.FC = () => {
 
   const handleCloseModal = () => {
     setShowFinanceModal(!showFinanceModal);
+  };
+
+  const handleFilterDate = () => {
+    console.log("date click");
   };
 
   useEffect(() => {
@@ -146,6 +155,35 @@ export const Dashboard: React.FC = () => {
               }
             />
           </S.CardValuesContainer>
+          <S.WelcomeContainer>
+            <div>
+              <h1>Olá, {user?.name}!</h1>
+              <p>
+                {format(new Date(), "EEEE',' dd 'de' MMMM", {
+                  locale: ptBR,
+                })}
+              </p>
+            </div>
+
+            {!isEmpty && (
+              <S.WelcomeButtonsContainer>
+                <Link to="/new">
+                  <Button width={115} height={35} color="primary">
+                    Criar finança
+                  </Button>
+                </Link>
+
+                <Button
+                  width={115}
+                  height={35}
+                  color="secondary"
+                  onClick={handleFilterDate}
+                >
+                  <Calendar size={25} />
+                </Button>
+              </S.WelcomeButtonsContainer>
+            )}
+          </S.WelcomeContainer>
         </div>
         <S.TransactionContainer>
           {loadingFinances ? (
@@ -157,7 +195,8 @@ export const Dashboard: React.FC = () => {
               <NoTransactions name={user?.name} />
             </S.NoTransactionsContainer>
           ) : (
-            <div>
+            <S.TransactionsCardContainer>
+              <h1>Historico</h1>
               {finances?.map((finance, index) => (
                 <TransactionCard
                   onClick={() => {
@@ -176,7 +215,7 @@ export const Dashboard: React.FC = () => {
                   value={finance.value}
                 />
               ))}
-            </div>
+            </S.TransactionsCardContainer>
           )}
         </S.TransactionContainer>
         {showFinanceModal && (
