@@ -16,18 +16,18 @@ import {
 import { currencyFormatter } from "../../utils/currencyFormatter";
 
 import { TransactionModal } from "../../components/TransactionModal";
+import { DatePickerModal } from "../../components/DatePickerModal";
 import { TransactionCard } from "../../components/TransactionCard";
 import { NoTransactions } from "../../components/NoTransactions";
 import { SpinnerLoading } from "../../components/Spinner";
+import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { Card } from "../../components/Card";
+
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Button } from "../../components/Button";
 import { Link } from "react-router-dom";
 import { Calendar } from "@phosphor-icons/react";
-import "react-day-picker/dist/style.css";
-import { DatePickerModal } from "../../components/DatePickerModal";
 
 export interface FinanceItemProps {
   id?: string;
@@ -70,7 +70,7 @@ export const Dashboard: React.FC = () => {
   const handleCloseDatePickerModal = () => {
     setOpenDateButton(false);
   };
-  1;
+
   const handleCancelFinanceFilter = () => {
     window.location.reload();
   };
@@ -78,39 +78,6 @@ export const Dashboard: React.FC = () => {
   const handleDateSelect = async (date: Date) => {
     try {
       setSelectedDate(date);
-      const formattedDate = format(date, "dd/MM/yyyy");
-
-      const docRef = collection(db, "finances");
-      const q = query(
-        docRef,
-        orderBy("created", "desc"),
-        where("uid", "==", user?.uid),
-        where("createdFormated", "==", formattedDate)
-      );
-
-      onSnapshot(q, (snapshot) => {
-        let lista: FinanceItemProps[] = [];
-
-        snapshot.forEach((doc) => {
-          lista.push({
-            id: doc.id,
-            created: doc.data().created,
-            createdFormated: doc.data().createdFormated,
-            description: doc.data().description,
-            nameOfFinance: doc.data().nameOfFinance,
-            type: doc.data().type,
-            uid: doc.data().uid,
-            value: doc.data().value,
-          });
-        });
-
-        if (lista.length <= 0) {
-          setIsEmpty(true);
-        } else {
-          setIsEmpty(false);
-        }
-        setFinances(lista);
-      });
     } catch (error) {
       throw error;
     } finally {
@@ -119,16 +86,27 @@ export const Dashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    const docRef = collection(db, "finances");
     const FinancesLoaging = async () => {
-      const q = query(
-        docRef,
-        orderBy("created", "desc"),
-        limit(10),
-        where("uid", "==", user?.uid)
-      );
+      const docRef = collection(db, "finances");
+      let q;
+      if (selectedDate) {
+        const formattedDate = format(selectedDate, "dd/MM/yyyy");
+        q = query(
+          docRef,
+          orderBy("created", "desc"),
+          limit(15),
+          where("createdFormated", "==", formattedDate)
+        );
+      } else {
+        q = query(
+          docRef,
+          orderBy("created", "desc"),
+          limit(15),
+          where("uid", "==", user?.uid)
+        );
+      }
 
-      onSnapshot(q, (snapshot) => {
+      const unsubscribe = onSnapshot(q, (snapshot) => {
         let lista: FinanceItemProps[] = [];
 
         snapshot.forEach((doc) => {
@@ -169,10 +147,12 @@ export const Dashboard: React.FC = () => {
         setTotalValueCash(totalValue);
 
         setLoadingFinances(false);
+
+        return () => unsubscribe;
       });
     };
     FinancesLoaging();
-  }, []);
+  }, [finances, selectedDate]);
 
   return (
     <>
@@ -222,11 +202,13 @@ export const Dashboard: React.FC = () => {
 
             <S.WelcomeButtonsContainer>
               <div>
-                <Link to="/new">
-                  <Button width={115} height={35} color="primary">
-                    Criar finança
-                  </Button>
-                </Link>
+                {finances.length >= 1 && (
+                  <Link to="/new">
+                    <Button width={115} height={35} color="primary">
+                      Criar finança
+                    </Button>
+                  </Link>
+                )}
 
                 <Button
                   width={115}
