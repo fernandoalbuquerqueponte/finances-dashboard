@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const NoTransactionsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 100%;
+  max-width: 80vw;
   justify-content: center;
   padding: 30px;
   border: 1px solid #c4c4c4;
