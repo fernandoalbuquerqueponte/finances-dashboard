@@ -6,13 +6,28 @@ import { SignIn } from "../pages/SignIn";
 import { SignUp } from "../pages/SignUp";
 import { Private } from "./Private";
 import { New } from "../pages/New";
+import { UserIsLogged } from "./UserIsLogged";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<SignIn />} />
+      <Route
+        path="/"
+        element={
+          <UserIsLogged>
+            <SignIn />
+          </UserIsLogged>
+        }
+      />
 
-      <Route path="/signUp" element={<SignUp />} />
+      <Route
+        path="/signUp"
+        element={
+          <UserIsLogged>
+            <SignUp />
+          </UserIsLogged>
+        }
+      />
 
       <Route
         path="/dashboard"
