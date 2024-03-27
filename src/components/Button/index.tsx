@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes } from "react";
 import * as S from "./Button.styled";
 
 export type ButtonProps = {
-  color?: "primary" | "success" | "danger";
+  color?: "primary" | "secondary" | "success" | "danger";
   width?: number;
   height?: number;
 } & ButtonHTMLAttributes<HTMLButtonElement>;

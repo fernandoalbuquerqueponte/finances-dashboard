@@ -4,6 +4,11 @@ export const DashboardContainer = styled.div`
   width: 100%;
 `;
 
+export const DatePickerContainer = styled.div`
+  position: absolute;
+  top: 100px;
+`;
+
 export const WelcomeButtonsContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -54,7 +59,7 @@ export const CardValuesContainer = styled.div`
 
 export const NoTransactionsContainer = styled.div`
   display: flex;
-  max-width: 100%;
+  width: 100%;
   justify-content: center;
   margin: 30px 15px;
 `;
@@ -66,6 +71,7 @@ export const LoadingContainer = styled.div`
 export const TransactionContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
   justify-content: center;
   margin-bottom: 50px;
 `;
@@ -77,5 +83,6 @@ export const TransactionsCardContainer = styled.div`
     text-transform: uppercase;
     padding-left: 20px;
     font-size: 15px;
+    max-width: 150px;
   }
 `;

@@ -19,20 +19,22 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
   onClick,
 }) => {
   return (
-    <S.TransactionCard>
-      {date && <p>{date}</p>}
-      <div onClick={onClick}>
-        {type === "entrada" ? <S.CashEntraceIcon /> : <S.CashOutFlowIcon />}
-        <div>
-          <span>{financeName}</span>
-          {type === "entrada" && (
-            <S.Entrace>{currencyFormatter(String(value))}</S.Entrace>
-          )}
-          {type === "saída" && (
-            <S.OutFlow>{currencyFormatter(String(value))}</S.OutFlow>
-          )}
+    <>
+      <S.TransactionCard>
+        {date && <p>{date}</p>}
+        <div onClick={onClick}>
+          {type === "entrada" ? <S.CashEntraceIcon /> : <S.CashOutFlowIcon />}
+          <div>
+            <span>{financeName}</span>
+            {type === "entrada" && (
+              <S.Entrace>{currencyFormatter(String(value))}</S.Entrace>
+            )}
+            {type === "saída" && (
+              <S.OutFlow>{currencyFormatter(String(value))}</S.OutFlow>
+            )}
+          </div>
         </div>
-      </div>
-    </S.TransactionCard>
+      </S.TransactionCard>
+    </>
   );
 };

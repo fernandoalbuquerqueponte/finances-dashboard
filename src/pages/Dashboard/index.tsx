@@ -26,6 +26,8 @@ import { ptBR } from "date-fns/locale";
 import { Button } from "../../components/Button";
 import { Link } from "react-router-dom";
 import { Calendar } from "@phosphor-icons/react";
+import "react-day-picker/dist/style.css";
+import { DatePickerModal } from "../../components/DatePickerModal";
 
 export interface FinanceItemProps {
   id?: string;
@@ -49,6 +51,8 @@ export const Dashboard: React.FC = () => {
   const [totalValueCash, setTotalValueCash] = useState<number>();
   const [financeCashOutBack, setFinanceCashOutBack] = useState<number>();
   const [financeCashEntrace, setFinanceCashEntrace] = useState<number>();
+  const [openDateButton, setOpenDateButton] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date>();
 
   const handleOpenModal = async (finance: FinanceItemProps) => {
     setShowFinanceModal(true);
@@ -60,7 +64,58 @@ export const Dashboard: React.FC = () => {
   };
 
   const handleFilterDate = () => {
-    console.log("date click");
+    setOpenDateButton(!openDateButton);
+  };
+
+  const handleCloseDatePickerModal = () => {
+    setOpenDateButton(false);
+  };
+
+  const handleCancelFinanceFilter = () => {
+    window.location.reload();
+  };
+
+  const handleDateSelect = async (date: Date) => {
+    try {
+      setSelectedDate(date);
+      const formattedDate = format(date, "dd/MM/yyyy");
+
+      const docRef = collection(db, "finances");
+      const q = query(
+        docRef,
+        orderBy("created", "desc"),
+        where("uid", "==", user?.uid),
+        where("createdFormated", "==", formattedDate)
+      );
+
+      onSnapshot(q, (snapshot) => {
+        let lista: FinanceItemProps[] = [];
+
+        snapshot.forEach((doc) => {
+          lista.push({
+            id: doc.id,
+            created: doc.data().created,
+            createdFormated: doc.data().createdFormated,
+            description: doc.data().description,
+            nameOfFinance: doc.data().nameOfFinance,
+            type: doc.data().type,
+            uid: doc.data().uid,
+            value: doc.data().value,
+          });
+        });
+
+        if (lista.length <= 0) {
+          setIsEmpty(true);
+        } else {
+          setIsEmpty(false);
+        }
+        setFinances(lista);
+      });
+    } catch (error) {
+      throw error;
+    } finally {
+      setOpenDateButton(false);
+    }
   };
 
   useEffect(() => {
@@ -165,24 +220,42 @@ export const Dashboard: React.FC = () => {
               </p>
             </div>
 
-            {!isEmpty && (
-              <S.WelcomeButtonsContainer>
-                <Link to="/new">
-                  <Button width={115} height={35} color="primary">
-                    Criar finança
-                  </Button>
-                </Link>
+            <S.WelcomeButtonsContainer>
+              <Link to="/new">
+                <Button width={115} height={35} color="primary">
+                  Criar finança
+                </Button>
+              </Link>
 
+              <Button
+                width={115}
+                height={35}
+                color="secondary"
+                onClick={() => handleFilterDate()}
+              >
+                <Calendar size={25} />
+              </Button>
+              {selectedDate && (
                 <Button
                   width={115}
                   height={35}
-                  color="secondary"
-                  onClick={handleFilterDate}
+                  color="danger"
+                  onClick={handleCancelFinanceFilter}
                 >
-                  <Calendar size={25} />
+                  Cancelar filtro
                 </Button>
-              </S.WelcomeButtonsContainer>
-            )}
+              )}
+            </S.WelcomeButtonsContainer>
+
+            <S.DatePickerContainer>
+              {openDateButton && (
+                <DatePickerModal
+                  onSelectDate={handleDateSelect}
+                  closeModal={handleCloseDatePickerModal}
+                  date={selectedDate}
+                />
+              )}
+            </S.DatePickerContainer>
           </S.WelcomeContainer>
         </div>
         <S.TransactionContainer>

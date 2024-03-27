@@ -24,6 +24,12 @@ export const Button = styled.button<ButtonProps>`
       background-color: ${theme.COLORS.violet900};
     `}
 
+  ${({ color }) =>
+    color === "secondary" &&
+    css`
+      background-color: #27272a;
+    `}
+
   ${({ color, theme }) =>
     color === "success" &&
     css`

@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import { ArrowCircleUp, ArrowCircleDown } from "@phosphor-icons/react";
 
-import { TransactionCardProps } from "./index";
-
 export const TransactionCard = styled.div`
   display: flex;
   max-width: 100%;
-  width: 750px;
+  width: 90vw;
+  max-width: 700px;
   margin: 9px auto;
   flex-direction: column;
   padding: 0 10px;
