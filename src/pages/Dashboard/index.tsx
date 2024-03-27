@@ -70,7 +70,7 @@ export const Dashboard: React.FC = () => {
   const handleCloseDatePickerModal = () => {
     setOpenDateButton(false);
   };
-
+  1;
   const handleCancelFinanceFilter = () => {
     window.location.reload();
   };
@@ -221,20 +221,23 @@ export const Dashboard: React.FC = () => {
             </div>
 
             <S.WelcomeButtonsContainer>
-              <Link to="/new">
-                <Button width={115} height={35} color="primary">
-                  Criar finança
-                </Button>
-              </Link>
+              <div>
+                <Link to="/new">
+                  <Button width={115} height={35} color="primary">
+                    Criar finança
+                  </Button>
+                </Link>
 
-              <Button
-                width={115}
-                height={35}
-                color="secondary"
-                onClick={() => handleFilterDate()}
-              >
-                <Calendar size={25} />
-              </Button>
+                <Button
+                  width={115}
+                  height={35}
+                  color="secondary"
+                  onClick={() => handleFilterDate()}
+                >
+                  <Calendar size={25} />
+                </Button>
+              </div>
+
               {selectedDate && (
                 <Button
                   width={115}

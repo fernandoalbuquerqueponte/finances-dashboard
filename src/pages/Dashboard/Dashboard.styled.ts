@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 export const DashboardContainer = styled.div`
-  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 `;
 
 export const DatePickerContainer = styled.div`
@@ -11,8 +12,15 @@ export const DatePickerContainer = styled.div`
 
 export const WelcomeButtonsContainer = styled.div`
   display: flex;
-  justify-content: space-between;
-  gap: 45px;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 0 10px;
+  }
 
   > a {
     text-decoration: none;
@@ -22,7 +30,8 @@ export const WelcomeButtonsContainer = styled.div`
 export const WelcomeContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  max-width: 100%;
+  justify-content: center;
   align-items: center;
   color: ${({ theme }) => theme.COLORS.neutral300};
   > div {
