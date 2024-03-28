@@ -7,8 +7,8 @@ export const ModalContainer = styled.div`
   right: 0;
   left: 0;
   max-width: 100%;
-  width: 700px;
-  height: 400px;
+  width: 600px;
+  max-height: 500px;
   margin: 0 auto;
   padding: 25px 20px;
   background-color: #121213;
@@ -21,7 +21,7 @@ export const ModalNavbarContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   padding-bottom: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 
   > svg {
     color: #c4c4c4;
@@ -34,65 +34,39 @@ export const ModalNavbarContainer = styled.div`
   > h1 {
     font-size: 19px;
     color: #fafafa;
+    font-weight: 500;
   }
 `;
 
+export const ButtonsModalContainer = styled.div`
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin: 20px 10px;
+`;
+
 export const ModalContentContainer = styled.div`
-  table {
-    border: 1px solid #c4c4c4;
-    margin: 0 auto;
-    text-align: center;
-    padding: 0;
-    color: #c4c4c4;
-    width: 100%;
-    table-layout: fixed;
-    border-collapse: collapse;
-    th,
-    td {
-      overflow: ellipsis;
-      border: 1px solid #c4c4c4;
+  display: flex;
+  > div {
+    div {
+      display: flex;
+      border: 1px solid #7c7c8a;
+      align-items: center;
+      gap: 10px;
+      background-color: ${({ theme }) => theme.COLORS.neutral900};
+      border-radius: 12px;
+      margin: 10px 0;
       padding: 10px;
-      text-transform: capitalize;
+      p {
+        color: #fafafa;
+        font-size: 17px;
+        text-transform: capitalize;
+      }
     }
-  }
-  @media screen and (max-width: 600px) {
-    table {
-      border: 0;
+    h2 {
+      color: #fafafa;
+      font-size: 17px;
+      font-weight: 500;
     }
-
-    table thead {
-      border: none;
-      height: 1px;
-      margin: -1px;
-      overflow: hidden;
-      padding: 0;
-      position: absolute;
-      width: 1px;
-    }
-
-    table tr {
-      display: block;
-      margin-bottom: 0.6em;
-    }
-
-    table td {
-      border-bottom: 1px solid #ddd;
-      display: block;
-      font-size: 0.8em;
-      text-align: right;
-    }
-
-    table td::before {
-      content: attr(data-label);
-      float: left;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-  }
-
-  div {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 15px;
   }
 `;

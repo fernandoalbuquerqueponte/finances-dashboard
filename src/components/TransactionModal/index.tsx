@@ -40,43 +40,44 @@ export const TransactionModal = ({
         <X onClick={closeModal} width={19} height={19} />
       </S.ModalNavbarContainer>
       <S.ModalContentContainer>
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">Nome</th>
-              <th scope="col">Data</th>
-              <th scope="col">Tipo</th>
-              <th scope="col">Valor</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td data-label="Nome">{finance?.nameOfFinance}</td>
-              <td data-label="Data">{finance?.createdFormated}</td>
-              <td data-label="Tipo">
-                <span>{finance?.type}</span>
-              </td>
-              <td data-label="Valor">
-                {finance?.type === "entrada"
-                  ? currencyFormatter(String(finance?.value))
-                  : currencyFormatter(String(finance?.value))}
-              </td>
-            </tr>
-          </tbody>
-        </table>
         <div>
-          <Link to={`/new/${finance?.id}`}>
-            <Button name="Editar" width={100} height={40} color="primary" />
-          </Link>
-          <Button
-            name="Excluir"
-            onClick={() => handleRemoveFinance(finance?.id)}
-            width={100}
-            height={40}
-            color="danger"
-          />
+          <div>
+            <h2>Nome da finança:</h2>
+            <p>{finance?.nameOfFinance}</p>
+          </div>
+          <div>
+            <h2>Valor:</h2>
+            <p>{currencyFormatter(String(finance?.value))}</p>
+          </div>
+          <div>
+            <h2>Tipo da finança:</h2>
+            <p>{finance?.type}</p>
+          </div>
+          <div>
+            <h2>Data:</h2>
+            <p>{finance?.createdFormated}</p>
+          </div>
+          <div>
+            <h2>Descrição:</h2>
+            <p>{finance?.description}</p>
+          </div>
         </div>
       </S.ModalContentContainer>
+      <S.ButtonsModalContainer>
+        <Link to={`/new/${finance?.id}`}>
+          <Button width={100} height={40} color="primary">
+            Editar
+          </Button>
+        </Link>
+        <Button
+          onClick={() => handleRemoveFinance(finance?.id)}
+          width={100}
+          height={40}
+          color="danger"
+        >
+          Excluir
+        </Button>
+      </S.ButtonsModalContainer>
     </S.ModalContainer>
   );
 };

@@ -35,7 +35,6 @@ export const WelcomeContainer = styled.div`
   align-items: center;
   color: ${({ theme }) => theme.COLORS.neutral300};
   > div {
-    margin-bottom: 10px;
     > p {
       text-transform: capitalize;
       font-size: 17px;

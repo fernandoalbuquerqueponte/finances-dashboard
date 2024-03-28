@@ -52,7 +52,7 @@ export const New = () => {
       return;
     }
 
-    if (type !== "" && nameOfFinance !== undefined && value !== "") {
+    if (type !== "" && nameOfFinance !== "" && value !== "") {
       const numericValue = parseFloat(value);
 
       await addDoc(collection(db, "finances"), {
@@ -142,11 +142,11 @@ export const New = () => {
           label="Nome da finança"
         />
         <Input
-          placeholder="Ex: $4000,00"
+          placeholder="Ex: R$ 4000,00"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setValue(e.target.value)
           }
-          value={value.toString()}
+          value={value}
           type="number"
           label="Valor"
         />
