@@ -18,7 +18,6 @@ export const Profile = () => {
     useContext<any>(AuthContext);
 
   const [name, setName] = useState(user && user?.name);
-  const [email, setEmail] = useState(user && user?.email);
 
   const [imageAvatar, setImageAvatar] = useState<File | null>(null);
   const [avatarUrl, setAvatarUrl] = useState(user ? user.avatarUrl : "");
@@ -50,34 +49,32 @@ export const Profile = () => {
         `images/${currentUid}/${imageAvatar?.name}`
       );
 
-      const uploadTask = uploadBytes(storageRef, imageAvatar).then(
-        (response) => {
-          getDownloadURL(response.ref).then(async (downloadURL) => {
-            let imageUrl = downloadURL;
+      uploadBytes(storageRef, imageAvatar).then((response) => {
+        getDownloadURL(response.ref).then(async (downloadURL) => {
+          let imageUrl = downloadURL;
 
-            const docRef = doc(db, "users", user.uid);
+          const docRef = doc(db, "users", user.uid);
 
-            await updateDoc(docRef, {
-              name: name,
-              avatarUrl: imageUrl,
+          await updateDoc(docRef, {
+            name: name,
+            avatarUrl: imageUrl,
+          })
+            .then(() => {
+              let data = {
+                ...user,
+                name: name,
+                avatarUrl: imageUrl,
+              };
+              setUser(data);
+              storageData(data);
+              alert("Perfil atualizado com sucesso");
+              console.log(data);
             })
-              .then(() => {
-                let data = {
-                  ...user,
-                  name: name,
-                  avatarUrl: imageUrl,
-                };
-                setUser(data);
-                storageData(data);
-                alert("Perfil atualizado com sucesso");
-                console.log(data);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          });
-        }
-      );
+            .catch((err) => {
+              console.log(err);
+            });
+        });
+      });
     }
   };
 
@@ -132,7 +129,7 @@ export const Profile = () => {
           )}
         </S.LabelAvatar>
         <Input
-          placeholder={email}
+          placeholder={user && user.email}
           type="text"
           label="E-mail"
           autoComplete="off"

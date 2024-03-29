@@ -1,4 +1,3 @@
-import React from "react";
 import { DayPicker } from "react-day-picker";
 import * as S from "./DatePickerModal.styled";
 import { X } from "@phosphor-icons/react";
