@@ -48,7 +48,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (isUserLogged) {
         setUser(JSON.parse(isUserLogged));
         setLoading(false);
-        console.log("User está logado !");
       }
       setLoading(false);
     };

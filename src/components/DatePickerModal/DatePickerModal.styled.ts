@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const DatePickerModalContainer = styled.div`
   display: flex;
   flex-direction: column;
-  /* align-items: start; */
   max-width: 100%;
   height: 500px;
   background-color: #121214;
