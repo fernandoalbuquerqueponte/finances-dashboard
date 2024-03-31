@@ -139,6 +139,7 @@ export const New = () => {
             setNameOfFinance(e.target.value)
           }
           type="text"
+          autoComplete="off"
           label="Nome da finança"
         />
         <Input
@@ -148,12 +149,14 @@ export const New = () => {
           }
           value={value}
           type="number"
+          autoComplete="off"
           label="Valor"
         />
         <label>Descrição</label>
         <textarea
           placeholder="Descreva sua descrição (opcional)"
           value={description}
+          autoComplete="off"
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
             setDescription(e.target.value)
           }
