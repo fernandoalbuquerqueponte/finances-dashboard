@@ -141,4 +141,4 @@ _Agora que o ambiente foi configurado e ajustado para compilar e executar o proj
 [license-shield]: https://img.shields.io/github/license/proffapt/PROJECT_NAME.svg?style=for-the-badge
 [license-url]: https://github.com/proffapt/PROJECT_NAME/blob/master/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://www.linkedin.com/in/fernando-albuquerque-8a29a7226/
+[linkedin-url]: https://www.linkedin.com/in/fernando-albuquerque-poonte/
